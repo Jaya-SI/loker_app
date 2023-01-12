@@ -1,7 +1,9 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loker/bloc/notifikasi/notifikasi_bloc.dart';
+import 'package:loker/routes/router.gr.dart';
 import 'package:loker/widgets/notification_card_widget.dart';
 import 'package:sizer/sizer.dart';
 
@@ -81,7 +83,13 @@ class NotificationPage extends StatelessWidget {
       itemBuilder: (context, index) {
         return notifikasi.data![index]!.status == 'seleksi'
             ? InkWell(
-                onTap: () {},
+                onTap: () {
+                  context.router.push(
+                    DetailNotifSeleksiRoute(
+                      data: notifikasi.data![index],
+                    ),
+                  );
+                },
                 child: NotificationCardWidget(
                   date: notifikasi.data![index]!.createdAt.toString(),
                   nama: notifikasi.data![index]!.idPelamar!.nama,

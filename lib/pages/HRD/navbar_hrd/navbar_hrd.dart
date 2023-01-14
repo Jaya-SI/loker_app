@@ -99,7 +99,7 @@ class NavbarHRDPage extends StatelessWidget {
     }
     if (state.index == 1) {
       BlocProvider.of<NotifikasiBloc>(context).add(HrdGetListNotifikasiEvent());
-      return const NotificationPage();
+      return  NotificationPage();
     }
     if (state.index == 2) {
       BlocProvider.of<LokerBloc>(context).add(GetLokerEvent());

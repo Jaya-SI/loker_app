@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:loker/pages/HRD/navbar_hrd/notification/detail_lolos_page.dart';
 import 'package:loker/pages/HRD/navbar_hrd/notification/detail_notif_seleksi_page.dart';
 import 'package:loker/pages/Pelamar/Navbar/navbar_pelamar.dart';
 
@@ -20,6 +21,7 @@ import '../pages/splash/splash_login_page.dart';
     AutoRoute(page: NavbarHRDPage),
     AutoRoute(page: NavbarPelamarPage),
     AutoRoute(page: DetailNotifSeleksiPage),
+    AutoRoute(page: DetailLolosPage),
   ],
 )
 class $AppRouter {}

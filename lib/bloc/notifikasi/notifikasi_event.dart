@@ -15,8 +15,22 @@ class GetNotifikasiEvent extends NotifikasiEvent {
   List<Object> get props => [];
 }
 
+class GetNotifikasiAllEvent extends NotifikasiEvent {
+  String? id;
+
+  GetNotifikasiAllEvent({this.id});
+  @override
+  List<Object> get props => [];
+}
+
 class HrdGetListNotifikasiEvent extends NotifikasiEvent {
   HrdGetListNotifikasiEvent();
+  @override
+  List<Object> get props => [];
+}
+
+class HrdGetListNotifikasiInterviewEvent extends NotifikasiEvent {
+  HrdGetListNotifikasiInterviewEvent();
   @override
   List<Object> get props => [];
 }

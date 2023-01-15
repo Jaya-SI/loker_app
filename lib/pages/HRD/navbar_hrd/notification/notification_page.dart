@@ -9,15 +9,20 @@ import 'package:loker/widgets/notification_card_widget.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../../model/hrd_list_notifikasi_model.dart';
+import '../../../../model/list_interview_model.dart';
 
 class NotificationPage extends StatelessWidget {
   NotificationPage({super.key});
 
   CounterPage counter = CounterPage();
 
+  List<int> _idPelamar = [];
+
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<NotifikasiBloc>(context).add(HrdGetListNotifikasiEvent());
+    BlocProvider.of<NotifikasiBloc>(context).add(GetNotifikasiAllEvent());
+    HrdGetListNotifikasiModel notifikasi = HrdGetListNotifikasiModel();
+    ListInterviewModel interview = ListInterviewModel();
     return DefaultTabController(
       length: 4,
       child: Scaffold(
@@ -54,20 +59,20 @@ class NotificationPage extends StatelessWidget {
                 child: CircularProgressIndicator(),
               );
             }
-            if (state is HrdGetNotifikasiLoaded) {
+            if (state is NotifikasiLoadAll) {
               return TabBarView(
                 children: [
                   _seleksiPage(
-                    state.notifikasi,
+                    state.notifikasiHrd,
                   ),
                   _hasilSeleksiPage(
-                    state.notifikasi,
+                    state.notifikasiHrd,
                   ),
                   _interviewPage(
-                    state.notifikasi,
+                    state.notifikasiInterview,
                   ),
                   _diterimaPage(
-                    state.notifikasi,
+                    state.notifikasiInterview,
                   ),
                 ],
               );
@@ -227,7 +232,7 @@ class NotificationPage extends StatelessWidget {
     );
   }
 
-  Widget _interviewPage(HrdGetListNotifikasiModel notifikasi) {
+  Widget _interviewPage(ListInterviewModel notifikasi) {
     return ListView.builder(
       itemCount: notifikasi.data!.length,
       itemBuilder: (context, index) {
@@ -235,9 +240,9 @@ class NotificationPage extends StatelessWidget {
             ? InkWell(
                 onTap: () {},
                 child: NotificationCardWidget(
-                  date: notifikasi.data![index]!.createdAt.toString(),
-                  nama: notifikasi.data![index]!.idPelamar!.nama,
-                  status: notifikasi.data![index]!.idLoker!.nama,
+                  date: notifikasi.data![index]!.jadwal,
+                  nama: notifikasi.data![index]!.idSeleksi!.idPelamar,
+                  status: notifikasi.data![index]!.status,
                 ),
               )
             : Container();
@@ -245,7 +250,7 @@ class NotificationPage extends StatelessWidget {
     );
   }
 
-  Widget _diterimaPage(HrdGetListNotifikasiModel notifikasi) {
+  Widget _diterimaPage(ListInterviewModel notifikasi) {
     return ListView.builder(
       itemCount: notifikasi.data!.length,
       itemBuilder: (context, index) {
@@ -254,8 +259,8 @@ class NotificationPage extends StatelessWidget {
                 onTap: () {},
                 child: NotificationCardWidget(
                   date: notifikasi.data![index]!.createdAt.toString(),
-                  nama: notifikasi.data![index]!.idPelamar!.nama,
-                  status: notifikasi.data![index]!.idLoker!.nama,
+                  nama: notifikasi.data![index]!.idSeleksi!.idPelamar,
+                  status: notifikasi.data![index]!.status,
                 ),
               )
             : Container();

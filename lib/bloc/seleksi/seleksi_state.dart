@@ -20,6 +20,15 @@ class SeleksiLoaded extends SeleksiState {
   List<Object> get porps => [updateSeleksi];
 }
 
+class SeleksiLoadedAddInterview extends SeleksiState {
+  final DataAddInterview addInterview;
+
+  SeleksiLoadedAddInterview({required this.addInterview});
+
+  @override
+  List<Object> get props => [addInterview];
+}
+
 class SeleksiError extends SeleksiState {
   final String message;
 

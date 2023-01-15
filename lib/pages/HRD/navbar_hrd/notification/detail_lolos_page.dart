@@ -285,7 +285,7 @@ class _DetailLolosPageState extends State<DetailLolosPage> {
                       BlocProvider.of<SeleksiBloc>(context).add(
                         AddInterviewEvent(
                           idHrd: _idHrd,
-                          idPelamar: widget.data!.idPelamar.toString(),
+                          idPelamar: widget.data!.idPelamar!.id.toString(),
                           idSeleksi: widget.data!.id.toString(),
                           jadwal: jadwal!,
                         ),

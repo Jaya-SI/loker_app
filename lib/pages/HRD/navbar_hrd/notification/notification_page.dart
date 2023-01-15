@@ -236,12 +236,12 @@ class NotificationPage extends StatelessWidget {
     return ListView.builder(
       itemCount: notifikasi.data!.length,
       itemBuilder: (context, index) {
-        return notifikasi.data![index]!.status == 'interview'
+        return notifikasi.data![index]!.status == 'Interview'
             ? InkWell(
                 onTap: () {},
                 child: NotificationCardWidget(
                   date: notifikasi.data![index]!.jadwal,
-                  nama: notifikasi.data![index]!.idSeleksi!.idPelamar,
+                  nama: notifikasi.data![index]!.idPelamar!.nama,
                   status: notifikasi.data![index]!.status,
                 ),
               )

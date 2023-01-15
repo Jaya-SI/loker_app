@@ -44,6 +44,7 @@ class Datum {
     this.id,
     this.idSeleksi,
     this.idHrd,
+    this.idPelamar,
     this.jadwal,
     this.token,
     this.keterangan,
@@ -55,6 +56,7 @@ class Datum {
   int? id;
   IdSeleksi? idSeleksi;
   IdHrd? idHrd;
+  IdPelamar? idPelamar;
   String? jadwal;
   dynamic token;
   dynamic keterangan;
@@ -66,6 +68,7 @@ class Datum {
         id: json["id"],
         idSeleksi: IdSeleksi.fromJson(json["id_seleksi"]),
         idHrd: IdHrd.fromJson(json["id_hrd"]),
+        idPelamar: IdPelamar.fromJson(json["id_pelamar"]),
         jadwal: json["jadwal"],
         token: json["token"],
         keterangan: json["keterangan"],
@@ -78,6 +81,7 @@ class Datum {
         "id": id,
         "id_seleksi": idSeleksi!.toJson(),
         "id_hrd": idHrd!.toJson(),
+        "id_pelamar": idPelamar!.toJson(),
         "jadwal": jadwal,
         "token": token,
         "keterangan": keterangan,
@@ -131,6 +135,70 @@ class IdHrd {
       };
 }
 
+class IdPelamar {
+  IdPelamar({
+    this.id,
+    this.nama,
+    this.imgPelamar,
+    this.email,
+    this.password,
+    this.alamat,
+    this.noHp,
+    this.jenisKelamin,
+    this.role,
+    this.token,
+    this.cv,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  int? id;
+  String? nama;
+  String? imgPelamar;
+  String? email;
+  String? password;
+  String? alamat;
+  String? noHp;
+  String? jenisKelamin;
+  String? role;
+  dynamic token;
+  String? cv;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+
+  factory IdPelamar.fromJson(Map<String, dynamic> json) => IdPelamar(
+        id: json["id"],
+        nama: json["nama"],
+        imgPelamar: json["img_pelamar"],
+        email: json["email"],
+        password: json["password"],
+        alamat: json["alamat"],
+        noHp: json["no_hp"],
+        jenisKelamin: json["jenis_kelamin"],
+        role: json["role"],
+        token: json["token"],
+        cv: json["cv"],
+        createdAt: DateTime.parse(json["created_at"]),
+        updatedAt: DateTime.parse(json["updated_at"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "nama": nama,
+        "img_pelamar": imgPelamar,
+        "email": email,
+        "password": password,
+        "alamat": alamat,
+        "no_hp": noHp,
+        "jenis_kelamin": jenisKelamin,
+        "role": role,
+        "token": token,
+        "cv": cv,
+        "created_at": createdAt?.toIso8601String(),
+        "updated_at": updatedAt?.toIso8601String(),
+      };
+}
+
 class IdSeleksi {
   IdSeleksi({
     this.id,
@@ -148,7 +216,7 @@ class IdSeleksi {
   String? idLoker;
   String? suratLamaran;
   String? status;
-  String? keterangan;
+  dynamic keterangan;
   DateTime? createdAt;
   DateTime? updatedAt;
 

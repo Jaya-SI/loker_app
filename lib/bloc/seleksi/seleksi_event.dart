@@ -28,3 +28,25 @@ class UpadateSeleksiEvent extends SeleksiEvent {
   List<Object> get props =>
       [idPelamar, idLoker, suratLamaran, status, keterangan];
 }
+
+class AddInterviewEvent extends SeleksiEvent {
+  final String idSeleksi;
+  final String idHrd;
+  final String idPelamar;
+  final String jadwal;
+
+  AddInterviewEvent({
+    required this.idSeleksi,
+    required this.idPelamar,
+    required this.idHrd,
+    required this.jadwal,
+  });
+
+  @override
+  List<Object> get props => [
+        idSeleksi,
+        idHrd,
+        idPelamar,
+        jadwal,
+      ];
+}

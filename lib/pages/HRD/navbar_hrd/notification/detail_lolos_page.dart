@@ -4,13 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/date_symbol_data_file.dart';
 import 'package:loker/bloc/seleksi/seleksi_bloc.dart';
 import 'package:sizer/sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../model/hrd_list_notifikasi_model.dart';
-import '../../../../model/interview_model.dart';
 import '../../../../routes/router.gr.dart';
 import '../../../../services/shared_preferences_services.dart';
 

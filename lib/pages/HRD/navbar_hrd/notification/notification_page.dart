@@ -95,7 +95,7 @@ class NotificationPage extends StatelessWidget {
     return ListView.builder(
       itemCount: notifikasi.data!.length,
       itemBuilder: (context, index) {
-        return notifikasi.data![index]!.status == 'seleksi'
+        return notifikasi.data![index]!.status == 'Seleksi'
             ? InkWell(
                 onTap: () {
                   context.router.push(

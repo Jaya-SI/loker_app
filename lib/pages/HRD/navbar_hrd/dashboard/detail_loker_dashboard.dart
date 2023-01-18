@@ -1,8 +1,6 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loker/model/get_loker_model.dart';
-import 'package:loker/routes/router.gr.dart';
 import 'package:sizer/sizer.dart';
 
 import '../navbar_hrd.dart';
@@ -18,7 +16,11 @@ class DetailLokerDashboardPage extends StatelessWidget {
         automaticallyImplyLeading: true,
         leading: IconButton(
             onPressed: () {
-              context.router.push(const NavbarHRDRoute());
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => NavbarHRDPage(),
+                  ));
             },
             icon: const Icon(
               Icons.chevron_left,

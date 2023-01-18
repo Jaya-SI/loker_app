@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:loker/pages/splash/splash.dart';
-import 'package:loker/routes/router.gr.dart';
 import 'package:loker/widgets/card_profile_widget.dart';
 import 'package:restart_app/restart_app.dart';
 import 'package:sizer/sizer.dart';
-import 'package:auto_route/auto_route.dart';
 
-import '../../../../bloc/navbar/navbar_bloc.dart';
 import '../../../../services/shared_preferences_services.dart';
 import '../../../../widgets/header_profile_card.dart';
 
@@ -54,7 +49,8 @@ class ProfilePage extends StatelessWidget {
               CardProfile(
                 onTapCheck: () async {
                   await SharedPreferencesService.clearAllPrefs();
-                  context.router.replace(const SplashRoute());
+                  // context.router.replace(const SplashRoute());
+                  // Navigaot.
                   Restart.restartApp();
                 },
               ),

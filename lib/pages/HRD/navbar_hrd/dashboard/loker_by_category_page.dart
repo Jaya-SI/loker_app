@@ -1,12 +1,8 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:loker/bloc/navbar/navbar_bloc.dart';
-import 'package:loker/model/category_model.dart';
 import 'package:loker/model/get_data_category_model.dart';
 import 'package:loker/pages/HRD/navbar_hrd/navbar_hrd.dart';
-import 'package:loker/routes/router.gr.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../../bloc/loker/loker_bloc.dart';
@@ -27,7 +23,11 @@ class LokerByCategoryPage extends StatelessWidget {
         automaticallyImplyLeading: true,
         leading: IconButton(
             onPressed: () {
-              context.router.push(const NavbarHRDRoute());
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => NavbarHRDPage(),
+                  ));
             },
             icon: const Icon(
               Icons.chevron_left,

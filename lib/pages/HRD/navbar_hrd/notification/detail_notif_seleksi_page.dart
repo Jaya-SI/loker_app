@@ -1,10 +1,9 @@
-import 'package:auto_route/auto_route.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loker/bloc/seleksi/seleksi_bloc.dart';
-import 'package:loker/routes/router.gr.dart';
 import 'package:sizer/sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -44,6 +43,7 @@ class DetailNotifSeleksiPage extends StatelessWidget {
       ),
       body: BlocBuilder<SeleksiBloc, SeleksiState>(
         builder: (context, state) {
+          if (state is SeleksiInitial) {}
           if (state is SeleksiLoading) {
             return const Center(
               child: CircularProgressIndicator(),
@@ -57,7 +57,6 @@ class DetailNotifSeleksiPage extends StatelessWidget {
                   content: Text(state.updateSeleksi.status!),
                 ),
               );
-              context.router.push(const NavbarHRDRoute());
             });
           }
           return SingleChildScrollView(

@@ -1,15 +1,14 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loker/bloc/seleksi/seleksi_bloc.dart';
+import 'package:loker/pages/HRD/navbar_hrd/navbar_hrd.dart';
 import 'package:sizer/sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../model/hrd_list_notifikasi_model.dart';
-import '../../../../routes/router.gr.dart';
 import '../../../../services/shared_preferences_services.dart';
 
 class DetailLolosPage extends StatefulWidget {
@@ -65,7 +64,11 @@ class _DetailLolosPageState extends State<DetailLolosPage> {
                   content: Text(state.addInterview.status!),
                 ),
               );
-              context.router.push(const NavbarHRDRoute());
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => NavbarHRDPage(),
+                  ));
             });
           }
           return SingleChildScrollView(

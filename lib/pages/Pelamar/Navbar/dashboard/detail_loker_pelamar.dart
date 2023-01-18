@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,7 +6,6 @@ import 'package:loker/bloc/loker/loker_bloc.dart';
 import 'package:loker/model/notifikasi_model.dart';
 import 'package:loker/pages/Pelamar/Navbar/navbar_pelamar.dart';
 import 'package:loker/repositories/loker/loker_repository.dart';
-import 'package:loker/routes/router.gr.dart';
 import 'package:loker/widgets/btn_danger_widget.dart';
 import 'package:loker/widgets/btn_primary_widget.dart';
 import 'package:sizer/sizer.dart';
@@ -41,7 +39,11 @@ class DetailLokerPelamar extends StatelessWidget {
         automaticallyImplyLeading: true,
         leading: IconButton(
             onPressed: () {
-              context.router.push(const NavbarPelamarRoute());
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => NavbarPelamarPage(),
+                  ));
             },
             icon: const Icon(
               Icons.chevron_left,
@@ -74,7 +76,11 @@ class DetailLokerPelamar extends StatelessWidget {
                     content: Text('Berhasil Apply Loker'),
                   ),
                 );
-                context.router.push(const NavbarPelamarRoute());
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => NavbarPelamarPage(),
+                    ));
               });
             }
             if (state is LokerError) {

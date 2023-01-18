@@ -1,10 +1,11 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loker/bloc/notifikasi/notifikasi_bloc.dart';
 import 'package:loker/pages/HRD/navbar_hrd/notification/counter.dart';
-import 'package:loker/routes/router.gr.dart';
+import 'package:loker/pages/HRD/navbar_hrd/notification/detail_lolos_page.dart';
+import 'package:loker/pages/HRD/navbar_hrd/notification/detail_notif_interview_hrd_page.dart';
+import 'package:loker/pages/HRD/navbar_hrd/notification/detail_notif_seleksi_page.dart';
 import 'package:loker/widgets/notification_card_widget.dart';
 import 'package:sizer/sizer.dart';
 
@@ -15,6 +16,8 @@ class NotificationPage extends StatelessWidget {
   NotificationPage({super.key});
 
   CounterPage counter = CounterPage();
+
+  CounterInterview counterInterview = CounterInterview();
 
   List<int> _idPelamar = [];
 
@@ -48,7 +51,7 @@ class NotificationPage extends StatelessWidget {
               Tab(text: "Seleksi"),
               Tab(text: "Hasil Seleksi"),
               Tab(text: "Interview"),
-              Tab(text: "Diterima"),
+              Tab(text: "Hasil Interview"),
             ],
           ),
         ),
@@ -71,7 +74,7 @@ class NotificationPage extends StatelessWidget {
                   _interviewPage(
                     state.notifikasiInterview,
                   ),
-                  _diterimaPage(
+                  _hasilInterviewPage(
                     state.notifikasiInterview,
                   ),
                 ],
@@ -98,11 +101,12 @@ class NotificationPage extends StatelessWidget {
         return notifikasi.data![index]!.status == 'Seleksi'
             ? InkWell(
                 onTap: () {
-                  context.router.push(
-                    DetailNotifSeleksiRoute(
-                      data: notifikasi.data![index],
-                    ),
-                  );
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DetailNotifSeleksiPage(
+                            data: notifikasi.data![index]),
+                      ));
                 },
                 child: NotificationCardWidget(
                   date: notifikasi.data![index]!.createdAt.toString(),
@@ -188,14 +192,12 @@ class NotificationPage extends StatelessWidget {
         return notifikasi.data![index]!.status == 'Lolos Seleksi'
             ? InkWell(
                 onTap: () {
-                  // context.router.push(
-                  //   DetailNotifSeleksiRoute(
-                  //     data: notifikasi.data![index],
-                  //   ),
-                  // );
-                  context.router.push(DetailLolosRoute(
-                    data: notifikasi.data![index],
-                  ));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            DetailLolosPage(data: notifikasi.data![index]),
+                      ));
                 },
                 child: NotificationCardWidget(
                   date: notifikasi.data![index]!.createdAt.toString(),
@@ -215,11 +217,12 @@ class NotificationPage extends StatelessWidget {
         return notifikasi.data![index]!.status == 'Ditolak'
             ? InkWell(
                 onTap: () {
-                  context.router.push(
-                    DetailNotifSeleksiRoute(
-                      data: notifikasi.data![index],
-                    ),
-                  );
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DetailNotifSeleksiPage(
+                            data: notifikasi.data![index]),
+                      ));
                 },
                 child: NotificationCardWidget(
                   date: notifikasi.data![index]!.createdAt.toString(),
@@ -238,7 +241,15 @@ class NotificationPage extends StatelessWidget {
       itemBuilder: (context, index) {
         return notifikasi.data![index]!.status == 'Interview'
             ? InkWell(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DetailNotifInterviewHrdPage(
+                          data: notifikasi.data![index],
+                        ),
+                      ));
+                },
                 child: NotificationCardWidget(
                   date: notifikasi.data![index]!.jadwal,
                   nama: notifikasi.data![index]!.idPelamar!.nama,
@@ -250,16 +261,119 @@ class NotificationPage extends StatelessWidget {
     );
   }
 
-  Widget _diterimaPage(ListInterviewModel notifikasi) {
+  Widget _hasilInterviewPage(ListInterviewModel notifikasi) {
+    return BlocBuilder<CounterInterview, int>(
+      bloc: counterInterview,
+      builder: (context, state) {
+        return Column(
+          children: [
+            Container(
+              child: Row(
+                children: [
+                  Expanded(
+                    child: InkWell(
+                      onTap: () {
+                        counterInterview.backPage();
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border(
+                            bottom: state == 0
+                                ? const BorderSide(
+                                    color: Color(0xff4F4F4F), width: 2)
+                                : const BorderSide(color: Colors.transparent),
+                          ),
+                        ),
+                        child: Text(
+                          "Ditolak",
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: InkWell(
+                      onTap: () {
+                        counterInterview.nextPage();
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border(
+                            bottom: state == 1
+                                ? const BorderSide(
+                                    color: Color(0xff4F4F4F), width: 2)
+                                : const BorderSide(color: Colors.transparent),
+                          ),
+                        ),
+                        child: Text(
+                          "Lolos Seleksi",
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            Expanded(
+              child: state == 1
+                  ? _lolosInterview(notifikasi)
+                  : _ditolakInterview(notifikasi),
+            )
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _lolosInterview(ListInterviewModel notifikasi) {
     return ListView.builder(
       itemCount: notifikasi.data!.length,
       itemBuilder: (context, index) {
-        return notifikasi.data![index]!.status == 'diterima'
+        return notifikasi.data![index]!.status == 'Diterima'
             ? InkWell(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DetailNotifInterviewHrdPage(
+                          data: notifikasi.data![index],
+                        ),
+                      ));
+                },
                 child: NotificationCardWidget(
-                  date: notifikasi.data![index]!.createdAt.toString(),
-                  nama: notifikasi.data![index]!.idSeleksi!.idPelamar,
+                  date: notifikasi.data![index]!.jadwal,
+                  nama: notifikasi.data![index]!.idPelamar!.nama,
+                  status: notifikasi.data![index]!.status,
+                ),
+              )
+            : Container();
+      },
+    );
+  }
+
+  Widget _ditolakInterview(ListInterviewModel notifikasi) {
+    return ListView.builder(
+      itemCount: notifikasi.data!.length,
+      itemBuilder: (context, index) {
+        return notifikasi.data![index]!.status == 'Ditolak'
+            ? InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DetailNotifInterviewHrdPage(
+                          data: notifikasi.data![index],
+                        ),
+                      ));
+                },
+                child: NotificationCardWidget(
+                  date: notifikasi.data![index]!.jadwal,
+                  nama: notifikasi.data![index]!.idPelamar!.nama,
                   status: notifikasi.data![index]!.status,
                 ),
               )

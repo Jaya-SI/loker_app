@@ -1,11 +1,10 @@
-import 'package:auto_route/auto_route.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 
 import '../bloc/navbar/navbar_bloc.dart';
-import '../routes/router.gr.dart';
 
 class CardProfile extends StatelessWidget {
   const CardProfile({this.onTapCheck, super.key});

@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,7 +6,6 @@ import 'package:sizer/sizer.dart';
 
 import '../../../../bloc/loker/loker_bloc.dart';
 import '../../../../model/get_data_category_model.dart';
-import '../../../../routes/router.gr.dart';
 import '../../../../widgets/loker_post_widget.dart';
 import 'detail_loker_pelamar.dart';
 
@@ -27,7 +25,11 @@ class LokerByCategoryPelamarPage extends StatelessWidget {
         automaticallyImplyLeading: true,
         leading: IconButton(
             onPressed: () {
-              context.router.push(const NavbarPelamarRoute());
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => NavbarPelamarPage(),
+                  ));
             },
             icon: const Icon(
               Icons.chevron_left,

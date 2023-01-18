@@ -8,6 +8,7 @@ import 'package:loker/pages/Pelamar/Navbar/dashboard/detail_loker_pelamar.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../../model/get_loker_model.dart';
+import '../../../../model/list_interview_model.dart';
 import '../../../../model/notifikasi_model.dart';
 import '../../../../widgets/notification_card_widget.dart';
 
@@ -50,15 +51,13 @@ class NotifikasiPelamarPage extends StatelessWidget {
                 child: CircularProgressIndicator(),
               );
             }
-            if (state is NotifikasiLoaded) {
+            if (state is NotifikasiLoadAllPelamar) {
               return TabBarView(
                 children: [
                   _seleksiPage(
                     state.notifikasi,
                   ),
-                  _interviewPage(
-                    state.notifikasi,
-                  ),
+                  _interviewPage(state.notifikasiInterview),
                   _diterimaPage(
                     state.notifikasi,
                   ),
@@ -80,28 +79,18 @@ class NotifikasiPelamarPage extends StatelessWidget {
   }
 
   Widget _seleksiPage(GetNotifikasiModel notifikasi) {
-    // return Container(
-    //     child: notifikasi.data![1]!.status == 'seleksi'
-    //         ? Column(
-    //             children: [
-    //               NotificationCardWidget(
-    //                 date: notifikasi.data![0]!.createdAt.toString(),
-    //                 nama: notifikasi.data![0]!.idPelamar!.nama,
-    //                 status: notifikasi.data![0]!.status,
-    //               ),
-    //             ],
-    //           )
-    //         : Container());
     return ListView.builder(
       itemCount: notifikasi.data!.length,
       itemBuilder: (context, index) {
-        return notifikasi.data![index]!.status == 'seleksi'
+        return notifikasi.data![index]!.status == 'Seleksi' ||
+                notifikasi.data![index]!.status == 'Lolos Seleksi'
             ? InkWell(
                 onTap: () {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => DetailLokerPelamar(
+                          data: notifikasi.data![index]!,
                           idPelamar: notifikasi.data![index]!.idPelamar!.id!,
                           status: notifikasi.data![index]!.status,
                           loker: DataGetLoker(
@@ -141,16 +130,16 @@ class NotifikasiPelamarPage extends StatelessWidget {
     );
   }
 
-  Widget _interviewPage(GetNotifikasiModel notifikasi) {
+  Widget _interviewPage(ListInterviewModel notifikasi) {
     return ListView.builder(
       itemCount: notifikasi.data!.length,
       itemBuilder: (context, index) {
-        return notifikasi.data![index]!.status == 'interview'
+        return notifikasi.data![index]!.status == 'Interview'
             ? InkWell(
                 onTap: () {},
                 child: NotificationCardWidget(
-                  date: notifikasi.data![index]!.createdAt.toString(),
-                  nama: notifikasi.data![index]!.idLoker!.nama,
+                  date: notifikasi.data![index]!.jadwal.toString(),
+                  nama: notifikasi.data![index]!.idPelamar!.nama,
                   status: notifikasi.data![index]!.status,
                 ),
               )

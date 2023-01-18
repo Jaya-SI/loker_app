@@ -17,7 +17,10 @@ class NotifikasiBloc extends Bloc<NotifikasiEvent, NotifikasiState> {
       try {
         GetNotifikasiModel notifikasi =
             await _repository.getNotifikasi(id: event.id);
-        emit(NotifikasiLoaded(notifikasi: notifikasi));
+        ListInterviewModel interviewNotifikiasi =
+            await _repository.getListInterveiwPelamar(id: event.id);
+        emit(NotifikasiLoadAllPelamar(
+            notifikasi: notifikasi, notifikasiInterview: interviewNotifikiasi));
       } catch (e) {
         emit(NotifikasiError(message: e.toString()));
       }

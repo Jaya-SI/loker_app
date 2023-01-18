@@ -16,10 +16,26 @@ class NotifikasiLoadAll extends NotifikasiState {
   final HrdGetListNotifikasiModel notifikasiHrd;
   final ListInterviewModel notifikasiInterview;
 
-  NotifikasiLoadAll({required this.notifikasi, required this.notifikasiHrd, required this.notifikasiInterview});
+  NotifikasiLoadAll(
+      {required this.notifikasi,
+      required this.notifikasiHrd,
+      required this.notifikasiInterview});
 
   @override
   List<Object> get props => [notifikasi, notifikasiHrd, notifikasiInterview];
+}
+
+class NotifikasiLoadAllPelamar extends NotifikasiState {
+  final GetNotifikasiModel notifikasi;
+  final ListInterviewModel notifikasiInterview;
+
+  NotifikasiLoadAllPelamar({
+    required this.notifikasi,
+    required this.notifikasiInterview,
+  });
+
+  @override
+  List<Object> get props => [notifikasi, notifikasiInterview];
 }
 
 class NotifikasiLoaded extends NotifikasiState {

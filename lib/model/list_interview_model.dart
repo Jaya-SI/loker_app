@@ -242,3 +242,141 @@ class IdSeleksi {
         "updated_at": updatedAt?.toIso8601String(),
       };
 }
+
+// To parse this JSON data, do
+//
+//     final listInterviewByPelamarModel = listInterviewByPelamarModelFromJson(jsonString);
+
+ListInterviewByPelamarModel? listInterviewByPelamarModelFromJson(String str) =>
+    ListInterviewByPelamarModel.fromJson(json.decode(str));
+
+String listInterviewByPelamarModelToJson(ListInterviewByPelamarModel? data) =>
+    json.encode(data!.toJson());
+
+class ListInterviewByPelamarModel {
+  ListInterviewByPelamarModel({
+    this.success,
+    this.message,
+    this.data,
+  });
+
+  bool? success;
+  String? message;
+  List<DataInterviewByIdPelamar?>? data;
+
+  factory ListInterviewByPelamarModel.fromJson(Map<String, dynamic> json) =>
+      ListInterviewByPelamarModel(
+        success: json["success"],
+        message: json["message"],
+        data: json["data"] == null
+            ? []
+            : List<DataInterviewByIdPelamar?>.from(
+                json["data"]!.map((x) => DataInterviewByIdPelamar.fromJson(x))),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "success": success,
+        "message": message,
+        "data": data == null
+            ? []
+            : List<dynamic>.from(data!.map((x) => x!.toJson())),
+      };
+}
+
+class DataInterviewByIdPelamar {
+  DataInterviewByIdPelamar({
+    this.id,
+    this.idSeleksi,
+    this.idHrd,
+    this.idPelamar,
+    this.jadwal,
+    this.token,
+    this.keterangan,
+    this.status,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  int? id;
+  IdSeleksi? idSeleksi;
+  String? idHrd;
+  String? idPelamar;
+  String? jadwal;
+  dynamic token;
+  dynamic keterangan;
+  String? status;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+
+  factory DataInterviewByIdPelamar.fromJson(Map<String, dynamic> json) =>
+      DataInterviewByIdPelamar(
+        id: json["id"],
+        idSeleksi: IdSeleksi.fromJson(json["id_seleksi"]),
+        idHrd: json["id_hrd"],
+        idPelamar: json["id_pelamar"],
+        jadwal: json["jadwal"],
+        token: json["token"],
+        keterangan: json["keterangan"],
+        status: json["status"],
+        createdAt: DateTime.parse(json["created_at"]),
+        updatedAt: DateTime.parse(json["updated_at"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "id_seleksi": idSeleksi!.toJson(),
+        "id_hrd": idHrd,
+        "id_pelamar": idPelamar,
+        "jadwal": jadwal,
+        "token": token,
+        "keterangan": keterangan,
+        "status": status,
+        "created_at": createdAt?.toIso8601String(),
+        "updated_at": updatedAt?.toIso8601String(),
+      };
+}
+
+class idSeleksiByIdPelamar {
+  idSeleksiByIdPelamar({
+    this.id,
+    this.idPelamar,
+    this.idLoker,
+    this.suratLamaran,
+    this.status,
+    this.keterangan,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  int? id;
+  String? idPelamar;
+  String? idLoker;
+  String? suratLamaran;
+  String? status;
+  dynamic keterangan;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+
+  factory idSeleksiByIdPelamar.fromJson(Map<String, dynamic> json) =>
+      idSeleksiByIdPelamar(
+        id: json["id"],
+        idPelamar: json["id_pelamar"],
+        idLoker: json["id_loker"],
+        suratLamaran: json["surat_lamaran"],
+        status: json["status"],
+        keterangan: json["keterangan"],
+        createdAt: DateTime.parse(json["created_at"]),
+        updatedAt: DateTime.parse(json["updated_at"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "id_pelamar": idPelamar,
+        "id_loker": idLoker,
+        "surat_lamaran": suratLamaran,
+        "status": status,
+        "keterangan": keterangan,
+        "created_at": createdAt?.toIso8601String(),
+        "updated_at": updatedAt?.toIso8601String(),
+      };
+}

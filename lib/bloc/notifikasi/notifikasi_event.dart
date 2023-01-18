@@ -23,6 +23,14 @@ class GetNotifikasiAllEvent extends NotifikasiEvent {
   List<Object> get props => [];
 }
 
+class GetNotifikasiByIdPelamar extends NotifikasiEvent {
+  String? id;
+
+  GetNotifikasiByIdPelamar({this.id});
+  @override
+  List<Object> get props => [];
+}
+
 class HrdGetListNotifikasiEvent extends NotifikasiEvent {
   HrdGetListNotifikasiEvent();
   @override

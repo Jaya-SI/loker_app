@@ -21,6 +21,21 @@ class NotifikasiRepository extends BaseNotifikasiRepository {
     }
   }
 
+  Future<ListInterviewModel> getListInterveiwPelamar(
+      {String? id}) async {
+    final res = await http
+        .get(Uri.parse("${SharedCode.baseUrl}/api/pelamar/interview/$id"));
+
+    ListInterviewModel interview =
+        listInterviewModelFromJson(res.body)!;
+
+    if (res.statusCode == 200) {
+      return interview;
+    } else {
+      throw interview.message ?? 'Gagal Mendapatkan Notifikasi';
+    }
+  }
+
   Future<HrdGetListNotifikasiModel> hrdGetListNotifikasi() async {
     final res =
         await http.get(Uri.parse("${SharedCode.baseUrl}/api/hrd/list-seleksi"));

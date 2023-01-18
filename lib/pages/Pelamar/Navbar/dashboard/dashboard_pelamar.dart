@@ -17,8 +17,8 @@ class DashBoardPelamarPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<CategoryBloc>(context).add(CategoryGetEvent());
-    BlocProvider.of<LokerBloc>(context).add(GetLokerDashboardEvent());
+    // BlocProvider.of<CategoryBloc>(context).add(CategoryGetEvent());
+    // BlocProvider.of<LokerBloc>(context).add(GetLokerDashboardEvent());
     String _namaUser =
         SharedPreferencesService.getAuthPelamarModel()!.pelamar!.nama ?? '';
     String _imgUser =

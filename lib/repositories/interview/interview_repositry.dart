@@ -14,6 +14,7 @@ class InterviewRepository extends BaseInterviewRepository {
     String? token,
     String? idPelamar,
     String? status,
+    String? id,
   }) async {
     Map<String, dynamic> data = {
       'id_seleksi': idSeleksi,
@@ -25,7 +26,7 @@ class InterviewRepository extends BaseInterviewRepository {
     };
 
     final res = await http.post(
-      Uri.parse("${SharedCode.baseUrl}/api/hrd/update-interview/$idSeleksi"),
+      Uri.parse("${SharedCode.baseUrl}/api/hrd/update-interview/$id"),
       body: data,
     );
 

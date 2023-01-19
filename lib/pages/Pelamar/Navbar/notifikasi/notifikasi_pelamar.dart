@@ -40,7 +40,7 @@ class NotifikasiPelamarPage extends StatelessWidget {
             tabs: [
               Tab(text: "Seleksi"),
               Tab(text: "Interview"),
-              Tab(text: "Diterima"),
+              Tab(text: "Hasil Lamaran"),
             ],
           ),
         ),
@@ -59,7 +59,7 @@ class NotifikasiPelamarPage extends StatelessWidget {
                   ),
                   _interviewPage(state.notifikasiInterview),
                   _diterimaPage(
-                    state.notifikasi,
+                    state.notifikasiInterview,
                   ),
                 ],
               );
@@ -148,14 +148,15 @@ class NotifikasiPelamarPage extends StatelessWidget {
     );
   }
 
-  Widget _diterimaPage(GetNotifikasiModel notifikasi) {
+  Widget _diterimaPage(ListInterviewModel notifikasi) {
     return ListView.builder(
       itemCount: notifikasi.data!.length,
       itemBuilder: (context, index) {
-        return notifikasi.data![index]!.status == 'diterima'
+        return notifikasi.data![index]!.status == 'Diterima' ||
+                notifikasi.data![index]!.status == 'Ditolak'
             ? NotificationCardWidget(
-                date: notifikasi.data![index]!.createdAt.toString(),
-                nama: notifikasi.data![index]!.idLoker!.nama,
+                date: notifikasi.data![index]!.jadwal.toString(),
+                nama: notifikasi.data![index]!.idPelamar!.nama,
                 status: notifikasi.data![index]!.status,
               )
             : Container();

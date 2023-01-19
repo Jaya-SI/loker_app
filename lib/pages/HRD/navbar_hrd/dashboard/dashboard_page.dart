@@ -17,8 +17,8 @@ class DashboardPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<CategoryBloc>(context).add(CategoryGetEvent());
-    BlocProvider.of<LokerBloc>(context).add(GetLokerDashboardEvent());
+    // BlocProvider.of<CategoryBloc>(context).add(CategoryGetEvent());
+    // BlocProvider.of<LokerBloc>(context).add(GetLokerDashboardEvent());
     String _namaUser =
         SharedPreferencesService.getAuthModel()!.user!.nama ?? '';
 
@@ -47,10 +47,10 @@ class DashboardPage extends StatelessWidget {
                   height: 140,
                   child: BlocBuilder<CategoryBloc, CategoryState>(
                     builder: (context, state) {
-                      if (state is CategoryInitial) {
-                        BlocProvider.of<CategoryBloc>(context)
-                            .add(CategoryGetEvent());
-                      }
+                      // if (state is CategoryInitial) {
+                      //   BlocProvider.of<CategoryBloc>(context)
+                      //       .add(CategoryGetEvent());
+                      // }
                       if (state is CategoryGetSuccess) {
                         return ListView.builder(
                           scrollDirection: Axis.horizontal,
@@ -91,10 +91,10 @@ class DashboardPage extends StatelessWidget {
                 const SizedBox(height: 25),
                 BlocBuilder<LokerBloc, LokerState>(
                   builder: (context, state) {
-                    if (state is LokerInitial) {
-                      BlocProvider.of<LokerBloc>(context)
-                          .add(GetLokerDashboardEvent());
-                    }
+                    // if (state is LokerInitial) {
+                    //   BlocProvider.of<LokerBloc>(context)
+                    //       .add(GetLokerDashboardEvent());
+                    // }
                     if (state is LokerGetLoaded) {
                       return Container(
                         margin: const EdgeInsets.symmetric(

@@ -8,6 +8,7 @@ abstract class InterviewEvent extends Equatable {
 }
 
 class UpdateInterviewEvent extends InterviewEvent {
+  final String? id;
   final String? idSeleksi;
   final String? idHrd;
   final String? jadwal;
@@ -16,6 +17,7 @@ class UpdateInterviewEvent extends InterviewEvent {
   final String? status;
 
   UpdateInterviewEvent({
+    this.id,
     this.idSeleksi,
     this.idHrd,
     this.jadwal,

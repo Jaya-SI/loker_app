@@ -14,8 +14,13 @@ import '../../../../model/get_loker_model.dart';
 import '../../../../widgets/text_container_widget.dart';
 
 class DetailLokerPelamar extends StatelessWidget {
-  const DetailLokerPelamar(
-      {super.key, this.loker, required this.idPelamar, this.status, this.data});
+  const DetailLokerPelamar({
+    super.key,
+    this.loker,
+    required this.idPelamar,
+    this.status,
+    this.data,
+  });
   final DataGetLoker? loker;
   final Datum? data;
   final int idPelamar;
@@ -23,7 +28,6 @@ class DetailLokerPelamar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(data!.status);
     String? _idSeleksi;
     BlocProvider.of<LokerBloc>(context).add(
       CheckRegisteredLokerEvent(
@@ -135,27 +139,8 @@ class DetailLokerPelamar extends StatelessWidget {
                     keyboardType: TextInputType.text,
                   ),
                   const SizedBox(height: 40),
-                  data!.status == "Lolos Seleksi"
+                  data == null
                       ? Center(
-                          child: Container(
-                            width: MediaQuery.of(context).size.width,
-                            padding: const EdgeInsets.symmetric(vertical: 10),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: const Color(0xff01C488),
-                            ),
-                            child: Center(
-                              child: Text(
-                                "Lolos Seleksi",
-                                style: GoogleFonts.poppins(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ),
-                          ),
-                        )
-                      : Center(
                           child: BlocBuilder<LokerBloc, LokerState>(
                             builder: (context, state) {
                               if (state is LokerLoading) {
@@ -210,6 +195,85 @@ class DetailLokerPelamar extends StatelessWidget {
                             },
                           ),
                         )
+                      : data!.status == "Lolos Seleksi"
+                          ? Center(
+                              child: Container(
+                                width: MediaQuery.of(context).size.width,
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 10),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: const Color(0xff01C488),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    "Lolos Seleksi",
+                                    style: GoogleFonts.poppins(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )
+                          : Center(
+                              child: BlocBuilder<LokerBloc, LokerState>(
+                                builder: (context, state) {
+                                  if (state is LokerLoading) {
+                                    return const CircularProgressIndicator();
+                                  }
+                                  if (state is CheckLokerLoaded) {
+                                    _idSeleksi = state.checkLokerModel.data!.id
+                                        .toString();
+                                    isRegistered = true;
+                                  }
+                                  if (isRegistered != true) {
+                                    return BtnPrimaryWidget(
+                                      ontap: () {
+                                        BlocProvider.of<LokerBloc>(context).add(
+                                          AddLokertoSeleksiEvent(
+                                            idPelamar: idPelamar.toString(),
+                                            idLoker: loker!.id.toString(),
+                                            suratLamaran:
+                                                suratController.text != ""
+                                                    ? suratController.text
+                                                    : "",
+                                          ),
+                                        );
+                                      },
+                                      isLoading: isLoading,
+                                      heightBtn: 12.w,
+                                      widthBtn:
+                                          MediaQuery.of(context).size.width *
+                                              0.50,
+                                      txtBtn: isLoading ? "" : "Apply Loker",
+                                    );
+                                  } else {
+                                    return BtnDangerWidget(
+                                      // isLoading: isLoading,
+                                      heightBtn: 5,
+                                      widthBtn:
+                                          MediaQuery.of(context).size.width *
+                                              0.50,
+                                      txtBtn: "Cancel",
+                                      ontap: () async {
+                                        final res = await LokerRepository()
+                                            .deleteSeleksi(id: _idSeleksi);
+                                        if (res == "200") {
+                                          Navigator.pushAndRemoveUntil(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    NavbarPelamarPage(),
+                                              ),
+                                              (route) => false);
+                                        }
+                                      },
+                                    );
+                                  }
+                                },
+                              ),
+                            )
                 ],
               ),
             );

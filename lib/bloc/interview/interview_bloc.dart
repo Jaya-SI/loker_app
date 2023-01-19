@@ -10,10 +10,11 @@ part 'interview_state.dart';
 class InterviewBloc extends Bloc<InterviewEvent, InterviewState> {
   final InterviewRepository _repository;
   InterviewBloc(this._repository) : super(InterviewInitial()) {
-    on<UpdateInterviewEvent>((event, emit) async{
+    on<UpdateInterviewEvent>((event, emit) async {
       emit(InterviewLoading());
       try {
         DataInterviewModel interview = await _repository.updateInterview(
+          id: event.id,
           idSeleksi: event.idSeleksi,
           idHrd: event.idHrd,
           jadwal: event.jadwal,

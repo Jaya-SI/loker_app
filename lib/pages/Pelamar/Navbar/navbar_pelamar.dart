@@ -53,26 +53,26 @@ class NavbarPelamarPage extends StatelessWidget {
                 ),
                 label: '',
               ),
-              BottomNavigationBarItem(
-                icon: Container(
-                  margin: const EdgeInsets.only(top: 10),
-                  child: Image.asset(
-                    'assets/icons/add_loker.png',
-                    width: 24,
-                    color: state is NavbarLoaded && state.index == 2
-                        ? const Color(0xff272C2F)
-                        : Colors.grey,
-                  ),
-                ),
-                label: '',
-              ),
+              // BottomNavigationBarItem(
+              //   icon: Container(
+              //     margin: const EdgeInsets.only(top: 10),
+              //     child: Image.asset(
+              //       'assets/icons/add_loker.png',
+              //       width: 24,
+              //       color: state is NavbarLoaded && state.index == 2
+              //           ? const Color(0xff272C2F)
+              //           : Colors.grey,
+              //     ),
+              //   ),
+              //   label: '',
+              // ),
               BottomNavigationBarItem(
                 icon: Container(
                   margin: const EdgeInsets.only(top: 10),
                   child: Image.asset(
                     'assets/icons/person.png',
                     width: 24,
-                    color: state is NavbarLoaded && state.index == 3
+                    color: state is NavbarLoaded && state.index == 2
                         ? const Color(0xff272C2F)
                         : Colors.grey,
                   ),
@@ -106,11 +106,11 @@ class NavbarPelamarPage extends StatelessWidget {
       return const NotifikasiPelamarPage();
     }
     if (state.index == 2) {
-      return const WhislistPage();
-    }
-    if (state.index == 3) {
       return const ProfilePelamarPage();
     }
+    // if (state.index == 3) {
+    //   return const ProfilePelamarPage();
+    // }
     return state;
   }
 }

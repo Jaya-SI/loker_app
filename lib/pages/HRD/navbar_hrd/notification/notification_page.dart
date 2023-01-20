@@ -24,6 +24,8 @@ class NotificationPage extends StatelessWidget {
   int ditolakCount = 0;
   int interviewCount = 0;
   int seleksiCount = 0;
+  int diterimaCount = 0;
+  int ditolakInterviewCount = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -73,21 +75,37 @@ class NotificationPage extends StatelessWidget {
                   .where((element) => element!.status == 'Lolos Seleksi')
                   .toList());
               lolosCount = data.map((e) => e.length).toList()[0];
+
               var dataSeleksi = state.notifikasiHrd.data!.map((e) => state
                   .notifikasiHrd.data!
                   .where((element) => element!.status == 'Seleksi')
                   .toList());
               seleksiCount = dataSeleksi.map((e) => e.length).toList()[0];
+
               var dataDitolak = state.notifikasiHrd.data!.map((e) => state
                   .notifikasiHrd.data!
                   .where((element) => element!.status == 'Ditolak')
                   .toList());
               ditolakCount = dataDitolak.map((e) => e.length).toList()[0];
+
               var dataInterview = state.notifikasiInterview.data!.map((e) =>
                   state.notifikasiInterview.data!
                       .where((element) => element!.status == 'Interview')
                       .toList());
               interviewCount = dataInterview.map((e) => e.length).toList()[0];
+
+              var dataDiterima = state.notifikasiInterview.data!.map((e) =>
+                  state.notifikasiInterview.data!
+                      .where((element) => element!.status == 'Diterima')
+                      .toList());
+              diterimaCount = dataDiterima.map((e) => e.length).toList()[0];
+
+              var dataDitolakInterview = state.notifikasiInterview.data!.map(
+                  (e) => state.notifikasiInterview.data!
+                      .where((element) => element!.status == 'Ditolak')
+                      .toList());
+              ditolakInterviewCount =
+                  dataDitolakInterview.map((e) => e.length).toList()[0];
               return TabBarView(
                 children: [
                   _seleksiPage(
@@ -323,9 +341,15 @@ class NotificationPage extends StatelessWidget {
                                 : const BorderSide(color: Colors.transparent),
                           ),
                         ),
-                        child: Text(
-                          "Ditolak",
-                          textAlign: TextAlign.center,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Text(
+                              "Ditolak",
+                              textAlign: TextAlign.center,
+                            ),
+                            Text(ditolakInterviewCount.toString()),
+                          ],
                         ),
                       ),
                     ),
@@ -346,9 +370,15 @@ class NotificationPage extends StatelessWidget {
                                 : const BorderSide(color: Colors.transparent),
                           ),
                         ),
-                        child: Text(
-                          "Lolos Seleksi",
-                          textAlign: TextAlign.center,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Text(
+                              "Diterima",
+                              textAlign: TextAlign.center,
+                            ),
+                            Text(diterimaCount.toString()),
+                          ],
                         ),
                       ),
                     ),

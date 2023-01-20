@@ -34,12 +34,14 @@ class AddInterviewEvent extends SeleksiEvent {
   final String idHrd;
   final String idPelamar;
   final String jadwal;
+  final String keterangan;
 
   AddInterviewEvent({
     required this.idSeleksi,
     required this.idPelamar,
     required this.idHrd,
     required this.jadwal,
+    required this.keterangan,
   });
 
   @override

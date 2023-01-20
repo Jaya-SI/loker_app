@@ -5,12 +5,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loker/bloc/notifikasi/notifikasi_bloc.dart';
 import 'package:loker/pages/Pelamar/Navbar/dashboard/detail_loker_pelamar.dart';
+import 'package:loker/pages/Pelamar/Navbar/notifikasi/detail_notifikasi_interview_pelamar.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../../model/get_loker_model.dart';
 import '../../../../model/list_interview_model.dart';
 import '../../../../model/notifikasi_model.dart';
 import '../../../../widgets/notification_card_widget.dart';
+import 'detail_hasil_lamaran_pelamar.dart.dart';
 
 class NotifikasiPelamarPage extends StatelessWidget {
   const NotifikasiPelamarPage({super.key});
@@ -136,7 +138,16 @@ class NotifikasiPelamarPage extends StatelessWidget {
       itemBuilder: (context, index) {
         return notifikasi.data![index]!.status == 'Interview'
             ? InkWell(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => DetailNotifikasiInterviewPelamar(
+                        data: notifikasi.data![index]!,
+                      ),
+                    ),
+                  );
+                },
                 child: NotificationCardWidget(
                   date: notifikasi.data![index]!.jadwal.toString(),
                   nama: notifikasi.data![index]!.idPelamar!.nama,
@@ -154,10 +165,22 @@ class NotifikasiPelamarPage extends StatelessWidget {
       itemBuilder: (context, index) {
         return notifikasi.data![index]!.status == 'Diterima' ||
                 notifikasi.data![index]!.status == 'Ditolak'
-            ? NotificationCardWidget(
-                date: notifikasi.data![index]!.jadwal.toString(),
-                nama: notifikasi.data![index]!.idPelamar!.nama,
-                status: notifikasi.data![index]!.status,
+            ? InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => DetailHasilLamaranPelamar(
+                        data: notifikasi.data![index]!,
+                      ),
+                    ),
+                  );
+                },
+                child: NotificationCardWidget(
+                  date: notifikasi.data![index]!.jadwal.toString(),
+                  nama: notifikasi.data![index]!.idPelamar!.nama,
+                  status: notifikasi.data![index]!.status,
+                ),
               )
             : Container();
       },

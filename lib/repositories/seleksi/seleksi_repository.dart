@@ -45,6 +45,7 @@ class SeleksiRepository extends BaseSeleksiRepository {
     required String idHrd,
     required String idPelamar,
     required String jadwal,
+    required String keterangan,
   }) async {
     Map<String, String> data = {
       'id_seleksi': idSeleksi,
@@ -52,6 +53,7 @@ class SeleksiRepository extends BaseSeleksiRepository {
       'id_pelamar': idPelamar,
       'jadwal': jadwal,
       'status': 'Interview',
+      'keterangan': keterangan,
     };
 
     final response = await http.post(

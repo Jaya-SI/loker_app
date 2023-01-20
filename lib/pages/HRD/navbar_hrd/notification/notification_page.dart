@@ -20,12 +20,17 @@ class NotificationPage extends StatelessWidget {
   CounterInterview counterInterview = CounterInterview();
 
   List<int> _idPelamar = [];
+  int lolosCount = 0;
+  int ditolakCount = 0;
+  int interviewCount = 0;
+  int seleksiCount = 0;
 
   @override
   Widget build(BuildContext context) {
     BlocProvider.of<NotifikasiBloc>(context).add(GetNotifikasiAllEvent());
     HrdGetListNotifikasiModel notifikasi = HrdGetListNotifikasiModel();
     ListInterviewModel interview = ListInterviewModel();
+
     return DefaultTabController(
       length: 4,
       child: Scaffold(
@@ -42,7 +47,7 @@ class NotificationPage extends StatelessWidget {
           centerTitle: true,
           backgroundColor: Colors.white,
           elevation: 0,
-          bottom: const TabBar(
+          bottom: TabBar(
             isScrollable: true,
             indicatorColor: Colors.transparent,
             labelColor: Color(0xff4F4F4F),
@@ -63,6 +68,26 @@ class NotificationPage extends StatelessWidget {
               );
             }
             if (state is NotifikasiLoadAll) {
+              var data = state.notifikasiHrd.data!.map((e) => state
+                  .notifikasiHrd.data!
+                  .where((element) => element!.status == 'Lolos Seleksi')
+                  .toList());
+              lolosCount = data.map((e) => e.length).toList()[0];
+              var dataSeleksi = state.notifikasiHrd.data!.map((e) => state
+                  .notifikasiHrd.data!
+                  .where((element) => element!.status == 'Seleksi')
+                  .toList());
+              seleksiCount = dataSeleksi.map((e) => e.length).toList()[0];
+              var dataDitolak = state.notifikasiHrd.data!.map((e) => state
+                  .notifikasiHrd.data!
+                  .where((element) => element!.status == 'Ditolak')
+                  .toList());
+              ditolakCount = dataDitolak.map((e) => e.length).toList()[0];
+              var dataInterview = state.notifikasiInterview.data!.map((e) =>
+                  state.notifikasiInterview.data!
+                      .where((element) => element!.status == 'Interview')
+                      .toList());
+              interviewCount = dataInterview.map((e) => e.length).toList()[0];
               return TabBarView(
                 children: [
                   _seleksiPage(
@@ -144,9 +169,15 @@ class NotificationPage extends StatelessWidget {
                                 : const BorderSide(color: Colors.transparent),
                           ),
                         ),
-                        child: Text(
-                          "Ditolak",
-                          textAlign: TextAlign.center,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Text(
+                              "Ditolak",
+                              textAlign: TextAlign.center,
+                            ),
+                            Text(ditolakCount.toString()),
+                          ],
                         ),
                       ),
                     ),
@@ -167,9 +198,15 @@ class NotificationPage extends StatelessWidget {
                                 : const BorderSide(color: Colors.transparent),
                           ),
                         ),
-                        child: Text(
-                          "Lolos Seleksi",
-                          textAlign: TextAlign.center,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Text(
+                              "Lolos Seleksi",
+                              textAlign: TextAlign.center,
+                            ),
+                            Text(lolosCount.toString()),
+                          ],
                         ),
                       ),
                     ),

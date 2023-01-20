@@ -37,6 +37,7 @@ class SeleksiBloc extends Bloc<SeleksiEvent, SeleksiState> {
           idHrd: event.idHrd,
           idPelamar: event.idPelamar,
           jadwal: event.jadwal,
+          keterangan: event.keterangan,
         );
         emit(SeleksiLoadedAddInterview(addInterview: interview));
       } catch (e) {

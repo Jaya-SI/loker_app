@@ -158,6 +158,31 @@ class DetailNotifInterviewHrdPage extends StatelessWidget {
                     ),
                   ),
                 ),
+                const SizedBox(height: 20),
+                Text(
+                  "Keterangan Interview",
+                  style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                const SizedBox(height: 15),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    border: Border.all(
+                      color: const Color(0xffC5C5C5),
+                    ),
+                  ),
+                  child: Text(
+                    data!.keterangan ?? "",
+                    style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
                 const SizedBox(height: 30),
                 data!.status == "Diterima"
                     ? Container(

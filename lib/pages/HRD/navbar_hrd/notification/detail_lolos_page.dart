@@ -20,6 +20,7 @@ class DetailLolosPage extends StatefulWidget {
 }
 
 class _DetailLolosPageState extends State<DetailLolosPage> {
+  TextEditingController _keterangan = TextEditingController();
   String? jadwal;
   @override
   Widget build(BuildContext context) {
@@ -247,6 +248,45 @@ class _DetailLolosPageState extends State<DetailLolosPage> {
                 ),
                 const SizedBox(height: 30),
                 Text(
+                  "Keterangan Interview",
+                  style: GoogleFonts.poppins(
+                    fontSize: 14.sp,
+                    color: const Color(0xff272C2F),
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                TextField(
+                  maxLines: 5,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5),
+                      borderSide: const BorderSide(
+                        color: Color(0xffC5C5C5),
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5),
+                      borderSide: const BorderSide(
+                        color: Color(0xffC5C5C5),
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5),
+                      borderSide: const BorderSide(
+                        color: Color(0xffC5C5C5),
+                      ),
+                    ),
+                  ),
+                  controller: _keterangan,
+                  style: GoogleFonts.poppins(
+                    fontSize: 14.sp,
+                    color: const Color(0xff272C2F),
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                const SizedBox(height: 30),
+                Text(
                   "Tanggal Interview",
                   style: GoogleFonts.poppins(
                     fontSize: 14.sp,
@@ -289,6 +329,7 @@ class _DetailLolosPageState extends State<DetailLolosPage> {
                           idPelamar: widget.data!.idPelamar!.id.toString(),
                           idSeleksi: widget.data!.id.toString(),
                           jadwal: jadwal!,
+                          keterangan: _keterangan.text,
                         ),
                       );
                     },

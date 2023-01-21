@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "830264357579",
+    "project_id": "lokertwincom",
+    "storage_bucket": "lokertwincom.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:830264357579:android:783c08391b7d5c5740a14e",
+        "android_client_info": {
+          "package_name": "com.example.loker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "830264357579-50qgn3r8m3fcmdph3mgv2mhfj158d9fi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3ksd5LcLur6eI5KndZM0FkQ5qBYcAWt0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "830264357579-50qgn3r8m3fcmdph3mgv2mhfj158d9fi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

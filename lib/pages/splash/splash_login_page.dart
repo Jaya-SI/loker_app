@@ -1,11 +1,43 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loker/pages/HRD/login/login_hrd_page.dart';
 import 'package:loker/pages/Pelamar/Login/login_pelamar_page.dart';
 import 'package:sizer/sizer.dart';
 
-class SplashLoginPage extends StatelessWidget {
+import '../../main.dart';
+
+class SplashLoginPage extends StatefulWidget {
   const SplashLoginPage({super.key});
+
+  @override
+  State<SplashLoginPage> createState() => _SplashLoginPageState();
+}
+
+class _SplashLoginPageState extends State<SplashLoginPage> {
+  String? _token;
+  String? initialMessage;
+  bool _resolved = false;
+  @override
+  void initState() {
+    FirebaseMessaging.instance.getInitialMessage().then(
+          (value) => setState(
+            () {
+              _resolved = true;
+              initialMessage = value?.data.toString();
+            },
+          ),
+        );
+
+    FirebaseMessaging.onMessage.listen(showFlutterNotification);
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print('A new onMessageOpenedApp event was published!');
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -117,5 +149,27 @@ class SplashLoginPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void showFlutterNotification(RemoteMessage message) {
+    RemoteNotification? notification = message.notification;
+    AndroidNotification? android = message.notification?.android;
+    if (notification != null && android != null && !kIsWeb) {
+      flutterLocalNotificationsPlugin.show(
+        notification.hashCode,
+        notification.title,
+        notification.body,
+        NotificationDetails(
+          android: AndroidNotificationDetails(
+            channel.id,
+            channel.name,
+            channelDescription: channel.description,
+            // TODO add a proper drawable resource to android, for now using
+            //      one that already exists in example app.
+            icon: 'launch_background',
+          ),
+        ),
+      );
+    }
   }
 }

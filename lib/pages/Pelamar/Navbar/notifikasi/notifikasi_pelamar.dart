@@ -134,22 +134,22 @@ class NotifikasiPelamarPage extends StatelessWidget {
     return ListView.builder(
       itemCount: notifikasi.data!.length,
       itemBuilder: (context, index) {
-        return notifikasi.data![index]!.status == 'Interview'
+        return notifikasi.data![index].status == 'Interview'
             ? InkWell(
                 onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => DetailNotifikasiInterviewPelamar(
-                        data: notifikasi.data![index]!,
+                        data: notifikasi.data![index],
                       ),
                     ),
                   );
                 },
                 child: NotificationCardWidget(
-                  date: notifikasi.data![index]!.jadwal.toString(),
-                  nama: notifikasi.data![index]!.idPelamar!.nama,
-                  status: notifikasi.data![index]!.status,
+                  date: notifikasi.data![index].jadwal.toString(),
+                  nama: notifikasi.data![index].idPelamar!.nama,
+                  status: notifikasi.data![index].status,
                 ),
               )
             : Container();
@@ -161,23 +161,23 @@ class NotifikasiPelamarPage extends StatelessWidget {
     return ListView.builder(
       itemCount: notifikasi.data!.length,
       itemBuilder: (context, index) {
-        return notifikasi.data![index]!.status == 'Diterima' ||
-                notifikasi.data![index]!.status == 'Ditolak'
+        return notifikasi.data![index].status == 'Diterima' ||
+                notifikasi.data![index].status == 'Ditolak'
             ? InkWell(
                 onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => DetailHasilLamaranPelamar(
-                        data: notifikasi.data![index]!,
+                        data: notifikasi.data![index],
                       ),
                     ),
                   );
                 },
                 child: NotificationCardWidget(
-                  date: notifikasi.data![index]!.jadwal.toString(),
-                  nama: notifikasi.data![index]!.idPelamar!.nama,
-                  status: notifikasi.data![index]!.status,
+                  date: notifikasi.data![index].jadwal.toString(),
+                  nama: notifikasi.data![index].idPelamar!.nama,
+                  status: notifikasi.data![index].status,
                 ),
               )
             : Container();

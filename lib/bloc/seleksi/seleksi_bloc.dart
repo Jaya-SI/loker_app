@@ -5,6 +5,7 @@ import '../../model/hrd_list_notifikasi_model.dart';
 import '../../model/interview_model.dart';
 import '../../model/update_seleksi_model.dart';
 import '../../repositories/seleksi/seleksi_repository.dart';
+import 'package:http/http.dart' as http;
 
 part 'seleksi_event.dart';
 part 'seleksi_state.dart';
@@ -22,6 +23,8 @@ class SeleksiBloc extends Bloc<SeleksiEvent, SeleksiState> {
           status: event.status,
           keterangan: event.keterangan,
           id: event.id,
+          token: event.token,
+          posisi: event.posisi,
         );
         emit(SeleksiLoaded(updateSeleksi: seleksi));
       } catch (e) {
@@ -38,8 +41,11 @@ class SeleksiBloc extends Bloc<SeleksiEvent, SeleksiState> {
           idPelamar: event.idPelamar,
           jadwal: event.jadwal,
           keterangan: event.keterangan,
+          token: event.token,
+          idLoker: event.idLoker,
         );
         emit(SeleksiLoadedAddInterview(addInterview: interview));
+        emit(SeleksiInitial());
       } catch (e) {
         emit(SeleksiError(message: e.toString()));
       }

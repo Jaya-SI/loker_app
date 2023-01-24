@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -255,6 +254,8 @@ class DetailNotifSeleksiPage extends StatelessWidget {
                                 idLoker: data!.idLoker!.id.toString(),
                                 suratLamaran: data!.suratLamaran ?? "-",
                                 status: "Lolos Seleksi",
+                                posisi: data!.idLoker!.nama,
+                                token: data!.token,
                                 keterangan: _keteranganController.text,
                                 id: data!.id.toString(),
                               ),
@@ -286,6 +287,8 @@ class DetailNotifSeleksiPage extends StatelessWidget {
                                 idLoker: data!.idLoker!.id.toString(),
                                 suratLamaran: data!.suratLamaran ?? "-",
                                 status: "Ditolak",
+                                posisi: data!.idLoker!.nama,
+                                token: data!.token,
                                 keterangan: _keteranganController.text,
                                 id: data!.id.toString(),
                               ),

@@ -33,107 +33,127 @@ class NotificationPage extends StatelessWidget {
     HrdGetListNotifikasiModel notifikasi = HrdGetListNotifikasiModel();
     ListInterviewModel interview = ListInterviewModel();
 
-    return DefaultTabController(
-      length: 4,
-      child: Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: Text(
-            'Notification',
-            style: GoogleFonts.poppins(
-              color: const Color(0xff4F4F4F),
-              fontSize: 12.sp,
-              fontWeight: FontWeight.w600,
+    return BlocBuilder<NotifikasiBloc, NotifikasiState>(
+      builder: (context, state) {
+        if (state is NotifikasiLoading) {
+          return Scaffold(
+            appBar: AppBar(
+              automaticallyImplyLeading: false,
+              title: Text(
+                'Notification',
+                style: GoogleFonts.poppins(
+                  color: const Color(0xff4F4F4F),
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              centerTitle: true,
+              backgroundColor: Colors.white,
+              elevation: 0,
             ),
-          ),
-          centerTitle: true,
-          backgroundColor: Colors.white,
-          elevation: 0,
-          bottom: TabBar(
-            isScrollable: true,
-            indicatorColor: Colors.transparent,
-            labelColor: Color(0xff4F4F4F),
-            unselectedLabelColor: Color(0xffBDBDBD),
-            tabs: [
-              Tab(text: "Seleksi"),
-              Tab(text: "Hasil Seleksi"),
-              Tab(text: "Interview"),
-              Tab(text: "Hasil Interview"),
-            ],
-          ),
-        ),
-        body: BlocBuilder<NotifikasiBloc, NotifikasiState>(
-          builder: (context, state) {
-            if (state is NotifikasiLoading) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            if (state is NotifikasiLoadAll) {
-              var data = state.notifikasiHrd.data!.map((e) => state
-                  .notifikasiHrd.data!
-                  .where((element) => element!.status == 'Lolos Seleksi')
+            body: const Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        }
+        if (state is NotifikasiLoadAll) {
+          var dataSeleksi = state.notifikasiHrd.data!.map((e) => state
+              .notifikasiHrd.data!
+              .where((element) => element.status == 'Seleksi')
+              .toList());
+          seleksiCount = dataSeleksi.length > 0
+              ? dataSeleksi.map((e) => e.length).toList()[0]
+              : 0;
+
+          var data = state.notifikasiHrd.data!.map((e) => state
+              .notifikasiHrd.data!
+              .where((element) => element.status == 'Lolos Seleksi')
+              .toList());
+          lolosCount =
+              data.length > 0 ? data.map((e) => e.length).toList()[0] : 0;
+
+          var dataDitolak = state.notifikasiHrd.data!.map((e) => state
+              .notifikasiHrd.data!
+              .where((element) => element.status == 'Ditolak')
+              .toList());
+          ditolakCount = dataDitolak.length > 0
+              ? dataDitolak.map((e) => e.length).toList()[0]
+              : 0;
+
+          var dataInterview = state.notifikasiInterview.data!.map((e) => state
+              .notifikasiInterview.data!
+              .where((element) => element.status == 'Interview')
+              .toList());
+
+          interviewCount = dataInterview.length > 0
+              ? dataInterview.map((e) => e.length).toList()[0]
+              : 0;
+
+          var dataDiterima = state.notifikasiInterview.data!.map((e) => state
+              .notifikasiInterview.data!
+              .where((element) => element.status == 'Diterima')
+              .toList());
+          diterimaCount = dataDiterima.length > 0
+              ? dataDiterima.map((e) => e.length).toList()[0]
+              : 0;
+
+          var ditolakInterview = state.notifikasiInterview.data!.map((e) =>
+              state.notifikasiInterview.data!
+                  .where((element) => element.status == 'Ditolak')
                   .toList());
-              lolosCount = data.map((e) => e.length).toList()[0];
+          ditolakInterviewCount = ditolakInterview.length > 0
+              ? ditolakInterview.map((e) => e.length).toList()[0]
+              : 0;
 
-              var dataSeleksi = state.notifikasiHrd.data!.map((e) => state
-                  .notifikasiHrd.data!
-                  .where((element) => element!.status == 'Seleksi')
-                  .toList());
-              seleksiCount = dataSeleksi.map((e) => e.length).toList()[0];
-
-              var dataDitolak = state.notifikasiHrd.data!.map((e) => state
-                  .notifikasiHrd.data!
-                  .where((element) => element!.status == 'Ditolak')
-                  .toList());
-              ditolakCount = dataDitolak.map((e) => e.length).toList()[0];
-
-              var dataInterview = state.notifikasiInterview.data!.map((e) =>
-                  state.notifikasiInterview.data!
-                      .where((element) => element!.status == 'Interview')
-                      .toList());
-              interviewCount = dataInterview.map((e) => e.length).toList()[0];
-
-              var dataDiterima = state.notifikasiInterview.data!.map((e) =>
-                  state.notifikasiInterview.data!
-                      .where((element) => element!.status == 'Diterima')
-                      .toList());
-              diterimaCount = dataDiterima.map((e) => e.length).toList()[0];
-
-              var dataDitolakInterview = state.notifikasiInterview.data!.map(
-                  (e) => state.notifikasiInterview.data!
-                      .where((element) => element!.status == 'Ditolak')
-                      .toList());
-              ditolakInterviewCount =
-                  dataDitolakInterview.map((e) => e.length).toList()[0];
-              return TabBarView(
-                children: [
-                  _seleksiPage(
-                    state.notifikasiHrd,
+          return DefaultTabController(
+            length: 4,
+            child: Scaffold(
+                appBar: AppBar(
+                  automaticallyImplyLeading: false,
+                  title: Text(
+                    'Notification',
+                    style: GoogleFonts.poppins(
+                      color: const Color(0xff4F4F4F),
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
-                  _hasilSeleksiPage(
-                    state.notifikasiHrd,
+                  centerTitle: true,
+                  backgroundColor: Colors.white,
+                  elevation: 0,
+                  bottom: TabBar(
+                    isScrollable: true,
+                    indicatorColor: Colors.transparent,
+                    labelColor: Color(0xff4F4F4F),
+                    unselectedLabelColor: Color(0xffBDBDBD),
+                    tabs: [
+                      Tab(text: "Seleksi $seleksiCount"),
+                      Tab(text: "Hasil Seleksi"),
+                      Tab(text: "Interview $interviewCount"),
+                      Tab(text: "Hasil Interview"),
+                    ],
                   ),
-                  _interviewPage(
-                    state.notifikasiInterview,
-                  ),
-                  _hasilInterviewPage(
-                    state.notifikasiInterview,
-                  ),
-                ],
-              );
-            }
-            if (state is NotifikasiError) {
-              return const Center(
-                child: Text('Gagal memuat notifikasi'),
-              );
-            }
-            return const Center(
-              child: Text('Gagal memuat notifikasi'),
-            );
-          },
-        ),
-      ),
+                ),
+                body: TabBarView(
+                  children: [
+                    _seleksiPage(
+                      state.notifikasiHrd,
+                    ),
+                    _hasilSeleksiPage(
+                      state.notifikasiHrd,
+                    ),
+                    _interviewPage(
+                      state.notifikasiInterview,
+                    ),
+                    _hasilInterviewPage(
+                      state.notifikasiInterview,
+                    ),
+                  ],
+                )),
+          );
+        }
+        return Container();
+      },
     );
   }
 
@@ -141,7 +161,7 @@ class NotificationPage extends StatelessWidget {
     return ListView.builder(
       itemCount: notifikasi.data!.length,
       itemBuilder: (context, index) {
-        return notifikasi.data![index]!.status == 'Seleksi'
+        return notifikasi.data![index].status == 'Seleksi'
             ? InkWell(
                 onTap: () {
                   Navigator.push(
@@ -152,9 +172,9 @@ class NotificationPage extends StatelessWidget {
                       ));
                 },
                 child: NotificationCardWidget(
-                  date: notifikasi.data![index]!.createdAt.toString(),
-                  nama: notifikasi.data![index]!.idPelamar!.nama,
-                  status: notifikasi.data![index]!.idLoker!.nama,
+                  date: notifikasi.data![index].createdAt.toString(),
+                  nama: notifikasi.data![index].idPelamar!.nama,
+                  status: notifikasi.data![index].idLoker!.nama,
                 ),
               )
             : Container();
@@ -244,7 +264,7 @@ class NotificationPage extends StatelessWidget {
     return ListView.builder(
       itemCount: notifikasi.data!.length,
       itemBuilder: (context, index) {
-        return notifikasi.data![index]!.status == 'Lolos Seleksi'
+        return notifikasi.data![index].status == 'Lolos Seleksi'
             ? InkWell(
                 onTap: () {
                   Navigator.push(
@@ -255,9 +275,9 @@ class NotificationPage extends StatelessWidget {
                       ));
                 },
                 child: NotificationCardWidget(
-                  date: notifikasi.data![index]!.createdAt.toString(),
-                  nama: notifikasi.data![index]!.idPelamar!.nama,
-                  status: notifikasi.data![index]!.idLoker!.nama,
+                  date: notifikasi.data![index].createdAt.toString(),
+                  nama: notifikasi.data![index].idPelamar!.nama,
+                  status: notifikasi.data![index].idLoker!.nama,
                 ),
               )
             : Container();
@@ -269,7 +289,7 @@ class NotificationPage extends StatelessWidget {
     return ListView.builder(
       itemCount: notifikasi.data!.length,
       itemBuilder: (context, index) {
-        return notifikasi.data![index]!.status == 'Ditolak'
+        return notifikasi.data![index].status == 'Ditolak'
             ? InkWell(
                 onTap: () {
                   Navigator.push(
@@ -280,9 +300,9 @@ class NotificationPage extends StatelessWidget {
                       ));
                 },
                 child: NotificationCardWidget(
-                  date: notifikasi.data![index]!.createdAt.toString(),
-                  nama: notifikasi.data![index]!.idPelamar!.nama,
-                  status: notifikasi.data![index]!.idLoker!.nama,
+                  date: notifikasi.data![index].createdAt.toString(),
+                  nama: notifikasi.data![index].idPelamar!.nama,
+                  status: notifikasi.data![index].idLoker!.nama,
                 ),
               )
             : Container();
@@ -294,7 +314,7 @@ class NotificationPage extends StatelessWidget {
     return ListView.builder(
       itemCount: notifikasi.data!.length,
       itemBuilder: (context, index) {
-        return notifikasi.data![index]!.status == 'Interview'
+        return notifikasi.data![index].status == 'Interview'
             ? InkWell(
                 onTap: () {
                   Navigator.push(
@@ -306,9 +326,9 @@ class NotificationPage extends StatelessWidget {
                       ));
                 },
                 child: NotificationCardWidget(
-                  date: notifikasi.data![index]!.jadwal,
-                  nama: notifikasi.data![index]!.idPelamar!.nama,
-                  status: notifikasi.data![index]!.status,
+                  date: notifikasi.data![index].jadwal,
+                  nama: notifikasi.data![index].idPelamar!.nama,
+                  status: notifikasi.data![index].status,
                 ),
               )
             : Container();
@@ -401,7 +421,7 @@ class NotificationPage extends StatelessWidget {
     return ListView.builder(
       itemCount: notifikasi.data!.length,
       itemBuilder: (context, index) {
-        return notifikasi.data![index]!.status == 'Diterima'
+        return notifikasi.data![index].status == 'Diterima'
             ? InkWell(
                 onTap: () {
                   Navigator.push(
@@ -413,9 +433,9 @@ class NotificationPage extends StatelessWidget {
                       ));
                 },
                 child: NotificationCardWidget(
-                  date: notifikasi.data![index]!.jadwal,
-                  nama: notifikasi.data![index]!.idPelamar!.nama,
-                  status: notifikasi.data![index]!.status,
+                  date: notifikasi.data![index].jadwal,
+                  nama: notifikasi.data![index].idPelamar!.nama,
+                  status: notifikasi.data![index].status,
                 ),
               )
             : Container();
@@ -427,7 +447,7 @@ class NotificationPage extends StatelessWidget {
     return ListView.builder(
       itemCount: notifikasi.data!.length,
       itemBuilder: (context, index) {
-        return notifikasi.data![index]!.status == 'Ditolak'
+        return notifikasi.data![index].status == 'Ditolak'
             ? InkWell(
                 onTap: () {
                   Navigator.push(
@@ -439,9 +459,9 @@ class NotificationPage extends StatelessWidget {
                       ));
                 },
                 child: NotificationCardWidget(
-                  date: notifikasi.data![index]!.jadwal,
-                  nama: notifikasi.data![index]!.idPelamar!.nama,
-                  status: notifikasi.data![index]!.status,
+                  date: notifikasi.data![index].jadwal,
+                  nama: notifikasi.data![index].idPelamar!.nama,
+                  status: notifikasi.data![index].status,
                 ),
               )
             : Container();

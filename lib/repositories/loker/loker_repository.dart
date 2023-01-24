@@ -114,14 +114,17 @@ class LokerRepository extends BaseLokerRepository {
     String? idPelamar,
     String? idLoker,
     String? suratLamaran,
+    String? token,
     String? status,
   }) async {
     Map<String, dynamic> data = {
       'id_pelamar': idPelamar,
       'id_loker': idLoker,
+      'token': token,
       'surat_lamaran': suratLamaran != "" ? suratLamaran : "-",
       'status': status,
     };
+    
 
     final res = await http.post(
         Uri.parse("${SharedCode.baseUrl}/api/pelamar/add-seleksi"),

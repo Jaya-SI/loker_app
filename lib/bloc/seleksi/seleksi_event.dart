@@ -13,6 +13,8 @@ class UpadateSeleksiEvent extends SeleksiEvent {
   final String suratLamaran;
   final String status;
   final String keterangan;
+  final String? token;
+  final String? posisi;
   final String id;
 
   UpadateSeleksiEvent({
@@ -20,6 +22,8 @@ class UpadateSeleksiEvent extends SeleksiEvent {
     required this.idLoker,
     required this.suratLamaran,
     required this.status,
+    this.token,
+    this.posisi,
     required this.keterangan,
     required this.id,
   });
@@ -35,6 +39,8 @@ class AddInterviewEvent extends SeleksiEvent {
   final String idPelamar;
   final String jadwal;
   final String keterangan;
+  String? token;
+  final String idLoker;
 
   AddInterviewEvent({
     required this.idSeleksi,
@@ -42,6 +48,8 @@ class AddInterviewEvent extends SeleksiEvent {
     required this.idHrd,
     required this.jadwal,
     required this.keterangan,
+    this.token,
+    required this.idLoker,
   });
 
   @override

@@ -13,7 +13,8 @@ class InterviewBloc extends Bloc<InterviewEvent, InterviewState> {
     on<UpdateInterviewEvent>((event, emit) async {
       emit(InterviewLoading());
       try {
-        DataInterviewModel interview = await _repository.updateInterview(
+        UpadateInterviewModel interview = await _repository.updateInterview(
+          keterangan: event.keterangan,
           id: event.id,
           idSeleksi: event.idSeleksi,
           idHrd: event.idHrd,
@@ -21,8 +22,10 @@ class InterviewBloc extends Bloc<InterviewEvent, InterviewState> {
           token: event.token,
           idPelamar: event.idPelamar,
           status: event.status,
+          namaLoker: event.namaLoker,
+          idLoker: event.idLoker,
         );
-        emit(InterviewLoaded(interview: interview));
+        emit(InterviewLoaded(interview: interview.data!));
       } catch (e) {
         emit(InterviewError(message: e.toString()));
       }

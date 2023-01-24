@@ -41,6 +41,7 @@ class DataSeleksi {
     this.idPelamar,
     this.idLoker,
     this.suratLamaran,
+    this.token,
     this.status,
     this.keterangan,
     this.createdAt,
@@ -51,6 +52,7 @@ class DataSeleksi {
   String? idPelamar;
   String? idLoker;
   dynamic suratLamaran;
+  String? token;
   String? status;
   dynamic keterangan;
   DateTime? createdAt;
@@ -61,6 +63,7 @@ class DataSeleksi {
         idPelamar: json["id_pelamar"],
         idLoker: json["id_loker"],
         suratLamaran: json["surat_lamaran"],
+        token: json["token"],
         status: json["status"],
         keterangan: json["keterangan"],
         createdAt: DateTime.parse(json["created_at"]),
@@ -72,6 +75,7 @@ class DataSeleksi {
         "id_pelamar": idPelamar,
         "id_loker": idLoker,
         "surat_lamaran": suratLamaran,
+        "token": token,
         "status": status,
         "keterangan": keterangan,
         "created_at": createdAt?.toIso8601String(),

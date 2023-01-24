@@ -22,6 +22,7 @@ class DetailLolosPage extends StatefulWidget {
 class _DetailLolosPageState extends State<DetailLolosPage> {
   TextEditingController _keterangan = TextEditingController();
   String? jadwal;
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     String _idHrd =
@@ -65,11 +66,6 @@ class _DetailLolosPageState extends State<DetailLolosPage> {
                   content: Text(state.addInterview.status!),
                 ),
               );
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => NavbarHRDPage(),
-                  ));
             });
           }
           return SingleChildScrollView(
@@ -330,8 +326,15 @@ class _DetailLolosPageState extends State<DetailLolosPage> {
                           idSeleksi: widget.data!.id.toString(),
                           jadwal: jadwal!,
                           keterangan: _keterangan.text,
+                          token: widget.data!.token,
+                          idLoker: widget.data!.idLoker!.id.toString(),
                         ),
                       );
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => NavbarHRDPage(),
+                          ));
                     },
                     child: Text(
                       "Atur Jadwal Interview",

@@ -4,11 +4,11 @@
 
 import 'dart:convert';
 
-ListInterviewModel? listInterviewModelFromJson(String str) =>
+ListInterviewModel listInterviewModelFromJson(String str) =>
     ListInterviewModel.fromJson(json.decode(str));
 
-String listInterviewModelToJson(ListInterviewModel? data) =>
-    json.encode(data!.toJson());
+String listInterviewModelToJson(ListInterviewModel data) =>
+    json.encode(data.toJson());
 
 class ListInterviewModel {
   ListInterviewModel({
@@ -19,7 +19,7 @@ class ListInterviewModel {
 
   bool? success;
   String? message;
-  List<Datum?>? data;
+  List<Datum>? data;
 
   factory ListInterviewModel.fromJson(Map<String, dynamic> json) =>
       ListInterviewModel(
@@ -27,7 +27,7 @@ class ListInterviewModel {
         message: json["message"],
         data: json["data"] == null
             ? []
-            : List<Datum?>.from(json["data"]!.map((x) => Datum.fromJson(x))),
+            : List<Datum>.from(json["data"]!.map((x) => Datum.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -35,7 +35,7 @@ class ListInterviewModel {
         "message": message,
         "data": data == null
             ? []
-            : List<dynamic>.from(data!.map((x) => x!.toJson())),
+            : List<dynamic>.from(data!.map((x) => x.toJson())),
       };
 }
 
@@ -45,6 +45,7 @@ class Datum {
     this.idSeleksi,
     this.idHrd,
     this.idPelamar,
+    this.idLoker,
     this.jadwal,
     this.token,
     this.keterangan,
@@ -57,8 +58,9 @@ class Datum {
   IdSeleksi? idSeleksi;
   IdHrd? idHrd;
   IdPelamar? idPelamar;
+  IdLoker? idLoker;
   String? jadwal;
-  dynamic token;
+  String? token;
   dynamic keterangan;
   String? status;
   DateTime? createdAt;
@@ -66,22 +68,34 @@ class Datum {
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
         id: json["id"],
-        idSeleksi: IdSeleksi.fromJson(json["id_seleksi"]),
-        idHrd: IdHrd.fromJson(json["id_hrd"]),
-        idPelamar: IdPelamar.fromJson(json["id_pelamar"]),
+        idSeleksi: json["id_seleksi"] == null
+            ? null
+            : IdSeleksi.fromJson(json["id_seleksi"]),
+        idHrd: json["id_hrd"] == null ? null : IdHrd.fromJson(json["id_hrd"]),
+        idPelamar: json["id_pelamar"] == null
+            ? null
+            : IdPelamar.fromJson(json["id_pelamar"]),
+        idLoker: json["id_loker"] == null
+            ? null
+            : IdLoker.fromJson(json["id_loker"]),
         jadwal: json["jadwal"],
         token: json["token"],
         keterangan: json["keterangan"],
         status: json["status"],
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "id_seleksi": idSeleksi!.toJson(),
-        "id_hrd": idHrd!.toJson(),
-        "id_pelamar": idPelamar!.toJson(),
+        "id_seleksi": idSeleksi?.toJson(),
+        "id_hrd": idHrd?.toJson(),
+        "id_pelamar": idPelamar?.toJson(),
+        "id_loker": idLoker?.toJson(),
         "jadwal": jadwal,
         "token": token,
         "keterangan": keterangan,
@@ -135,6 +149,79 @@ class IdHrd {
       };
 }
 
+class IdLoker {
+  IdLoker({
+    this.id,
+    this.idCategory,
+    this.idHrd,
+    this.nama,
+    this.imgLoker,
+    this.alamat,
+    this.tanggal,
+    this.deskripsi1,
+    this.deskripsi2,
+    this.deskripsi3,
+    this.gaji,
+    this.status,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  int? id;
+  String? idCategory;
+  String? idHrd;
+  String? nama;
+  String? imgLoker;
+  String? alamat;
+  DateTime? tanggal;
+  String? deskripsi1;
+  String? deskripsi2;
+  String? deskripsi3;
+  String? gaji;
+  String? status;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+
+  factory IdLoker.fromJson(Map<String, dynamic> json) => IdLoker(
+        id: json["id"],
+        idCategory: json["id_category"],
+        idHrd: json["id_hrd"],
+        nama: json["nama"],
+        imgLoker: json["img_loker"],
+        alamat: json["alamat"],
+        tanggal:
+            json["tanggal"] == null ? null : DateTime.parse(json["tanggal"]),
+        deskripsi1: json["deskripsi1"],
+        deskripsi2: json["deskripsi2"],
+        deskripsi3: json["deskripsi3"],
+        gaji: json["gaji"],
+        status: json["status"],
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "id_category": idCategory,
+        "id_hrd": idHrd,
+        "nama": nama,
+        "img_loker": imgLoker,
+        "alamat": alamat,
+        "tanggal": tanggal?.toIso8601String(),
+        "deskripsi1": deskripsi1,
+        "deskripsi2": deskripsi2,
+        "deskripsi3": deskripsi3,
+        "gaji": gaji,
+        "status": status,
+        "created_at": createdAt?.toIso8601String(),
+        "updated_at": updatedAt?.toIso8601String(),
+      };
+}
+
 class IdPelamar {
   IdPelamar({
     this.id,
@@ -178,8 +265,12 @@ class IdPelamar {
         role: json["role"],
         token: json["token"],
         cv: json["cv"],
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -205,6 +296,7 @@ class IdSeleksi {
     this.idPelamar,
     this.idLoker,
     this.suratLamaran,
+    this.token,
     this.status,
     this.keterangan,
     this.createdAt,
@@ -215,6 +307,7 @@ class IdSeleksi {
   String? idPelamar;
   String? idLoker;
   String? suratLamaran;
+  String? token;
   String? status;
   dynamic keterangan;
   DateTime? createdAt;
@@ -225,148 +318,15 @@ class IdSeleksi {
         idPelamar: json["id_pelamar"],
         idLoker: json["id_loker"],
         suratLamaran: json["surat_lamaran"],
-        status: json["status"],
-        keterangan: json["keterangan"],
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "id_pelamar": idPelamar,
-        "id_loker": idLoker,
-        "surat_lamaran": suratLamaran,
-        "status": status,
-        "keterangan": keterangan,
-        "created_at": createdAt?.toIso8601String(),
-        "updated_at": updatedAt?.toIso8601String(),
-      };
-}
-
-// To parse this JSON data, do
-//
-//     final listInterviewByPelamarModel = listInterviewByPelamarModelFromJson(jsonString);
-
-ListInterviewByPelamarModel? listInterviewByPelamarModelFromJson(String str) =>
-    ListInterviewByPelamarModel.fromJson(json.decode(str));
-
-String listInterviewByPelamarModelToJson(ListInterviewByPelamarModel? data) =>
-    json.encode(data!.toJson());
-
-class ListInterviewByPelamarModel {
-  ListInterviewByPelamarModel({
-    this.success,
-    this.message,
-    this.data,
-  });
-
-  bool? success;
-  String? message;
-  List<DataInterviewByIdPelamar?>? data;
-
-  factory ListInterviewByPelamarModel.fromJson(Map<String, dynamic> json) =>
-      ListInterviewByPelamarModel(
-        success: json["success"],
-        message: json["message"],
-        data: json["data"] == null
-            ? []
-            : List<DataInterviewByIdPelamar?>.from(
-                json["data"]!.map((x) => DataInterviewByIdPelamar.fromJson(x))),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "success": success,
-        "message": message,
-        "data": data == null
-            ? []
-            : List<dynamic>.from(data!.map((x) => x!.toJson())),
-      };
-}
-
-class DataInterviewByIdPelamar {
-  DataInterviewByIdPelamar({
-    this.id,
-    this.idSeleksi,
-    this.idHrd,
-    this.idPelamar,
-    this.jadwal,
-    this.token,
-    this.keterangan,
-    this.status,
-    this.createdAt,
-    this.updatedAt,
-  });
-
-  int? id;
-  IdSeleksi? idSeleksi;
-  String? idHrd;
-  String? idPelamar;
-  String? jadwal;
-  dynamic token;
-  dynamic keterangan;
-  String? status;
-  DateTime? createdAt;
-  DateTime? updatedAt;
-
-  factory DataInterviewByIdPelamar.fromJson(Map<String, dynamic> json) =>
-      DataInterviewByIdPelamar(
-        id: json["id"],
-        idSeleksi: IdSeleksi.fromJson(json["id_seleksi"]),
-        idHrd: json["id_hrd"],
-        idPelamar: json["id_pelamar"],
-        jadwal: json["jadwal"],
         token: json["token"],
-        keterangan: json["keterangan"],
-        status: json["status"],
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "id_seleksi": idSeleksi!.toJson(),
-        "id_hrd": idHrd,
-        "id_pelamar": idPelamar,
-        "jadwal": jadwal,
-        "token": token,
-        "keterangan": keterangan,
-        "status": status,
-        "created_at": createdAt?.toIso8601String(),
-        "updated_at": updatedAt?.toIso8601String(),
-      };
-}
-
-class idSeleksiByIdPelamar {
-  idSeleksiByIdPelamar({
-    this.id,
-    this.idPelamar,
-    this.idLoker,
-    this.suratLamaran,
-    this.status,
-    this.keterangan,
-    this.createdAt,
-    this.updatedAt,
-  });
-
-  int? id;
-  String? idPelamar;
-  String? idLoker;
-  String? suratLamaran;
-  String? status;
-  dynamic keterangan;
-  DateTime? createdAt;
-  DateTime? updatedAt;
-
-  factory idSeleksiByIdPelamar.fromJson(Map<String, dynamic> json) =>
-      idSeleksiByIdPelamar(
-        id: json["id"],
-        idPelamar: json["id_pelamar"],
-        idLoker: json["id_loker"],
-        suratLamaran: json["surat_lamaran"],
         status: json["status"],
         keterangan: json["keterangan"],
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -374,6 +334,7 @@ class idSeleksiByIdPelamar {
         "id_pelamar": idPelamar,
         "id_loker": idLoker,
         "surat_lamaran": suratLamaran,
+        "token": token,
         "status": status,
         "keterangan": keterangan,
         "created_at": createdAt?.toIso8601String(),

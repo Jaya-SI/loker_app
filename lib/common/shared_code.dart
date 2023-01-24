@@ -10,5 +10,5 @@ class SharedCode {
   static const String authJsonPelamar = 'authJsonPelamar';
 
   //Api constants
-  static const String baseUrl = 'https://datapkl.banjarcode.com';
+  static const String baseUrl = 'https://lokerpkl.banjarcode.com';
 }

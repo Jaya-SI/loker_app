@@ -27,7 +27,7 @@ class NotifikasiRepository extends BaseNotifikasiRepository {
         .get(Uri.parse("${SharedCode.baseUrl}/api/pelamar/interview/$id"));
 
     ListInterviewModel interview =
-        listInterviewModelFromJson(res.body)!;
+        listInterviewModelFromJson(res.body);
 
     if (res.statusCode == 200) {
       return interview;
@@ -41,7 +41,7 @@ class NotifikasiRepository extends BaseNotifikasiRepository {
         await http.get(Uri.parse("${SharedCode.baseUrl}/api/hrd/list-seleksi"));
 
     HrdGetListNotifikasiModel notifikasi =
-        hrdGetListNotifikasiModelFromJson(res.body)!;
+        hrdGetListNotifikasiModelFromJson(res.body);
 
     if (res.statusCode == 200) {
       return notifikasi;
@@ -54,7 +54,7 @@ class NotifikasiRepository extends BaseNotifikasiRepository {
     final res = await http
         .get(Uri.parse("${SharedCode.baseUrl}/api/hrd/list-interview"));
 
-    ListInterviewModel interview = listInterviewModelFromJson(res.body)!;
+    ListInterviewModel interview = listInterviewModelFromJson(res.body);
 
     if (res.statusCode == 200) {
       return interview;

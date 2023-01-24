@@ -15,6 +15,9 @@ class UpdateInterviewEvent extends InterviewEvent {
   final String? token;
   final String? idPelamar;
   final String? status;
+  final String? namaLoker;
+  final String? idLoker;
+  final String? keterangan;
 
   UpdateInterviewEvent({
     this.id,
@@ -24,6 +27,9 @@ class UpdateInterviewEvent extends InterviewEvent {
     this.token,
     this.idPelamar,
     this.status,
+    this.namaLoker,
+    this.idLoker,
+    this.keterangan,
   });
 
   @override

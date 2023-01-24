@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:loker/model/get_loker_model.dart';
 import 'package:loker/repositories/loker/loker_repository.dart';
@@ -39,10 +40,12 @@ class LokerBloc extends Bloc<LokerEvent, LokerState> {
     on<AddLokertoSeleksiEvent>((event, emit) async {
       emit(LokerLoading());
       try {
+        String? token = await FirebaseMessaging.instance.getToken();
         AddSeleksiModel loker = await _repository.addSeleksi(
           suratLamaran: event.suratLamaran,
           idLoker: event.idLoker,
           idPelamar: event.idPelamar,
+          token: token,
           status: 'seleksi',
         );
         emit(SeleksiLoaded(seleksiModel: loker));

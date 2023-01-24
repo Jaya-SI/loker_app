@@ -4,9 +4,9 @@
 
 import 'dart:convert';
 
-HrdGetListNotifikasiModel? hrdGetListNotifikasiModelFromJson(String str) => HrdGetListNotifikasiModel.fromJson(json.decode(str));
+HrdGetListNotifikasiModel hrdGetListNotifikasiModelFromJson(String str) => HrdGetListNotifikasiModel.fromJson(json.decode(str));
 
-String hrdGetListNotifikasiModelToJson(HrdGetListNotifikasiModel? data) => json.encode(data!.toJson());
+String hrdGetListNotifikasiModelToJson(HrdGetListNotifikasiModel data) => json.encode(data.toJson());
 
 class HrdGetListNotifikasiModel {
     HrdGetListNotifikasiModel({
@@ -17,18 +17,18 @@ class HrdGetListNotifikasiModel {
 
     bool? success;
     String? message;
-    List<Datum?>? data;
+    List<Datum>? data;
 
     factory HrdGetListNotifikasiModel.fromJson(Map<String, dynamic> json) => HrdGetListNotifikasiModel(
         success: json["success"],
         message: json["message"],
-        data: json["data"] == null ? [] : List<Datum?>.from(json["data"]!.map((x) => Datum.fromJson(x))),
+        data: json["data"] == null ? [] : List<Datum>.from(json["data"]!.map((x) => Datum.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
         "success": success,
         "message": message,
-        "data": data == null ? [] : List<dynamic>.from(data!.map((x) => x!.toJson())),
+        "data": data == null ? [] : List<dynamic>.from(data!.map((x) => x.toJson())),
     };
 }
 
@@ -38,6 +38,7 @@ class Datum {
         this.idPelamar,
         this.idLoker,
         this.suratLamaran,
+        this.token,
         this.status,
         this.keterangan,
         this.createdAt,
@@ -48,6 +49,7 @@ class Datum {
     IdPelamar? idPelamar;
     IdLoker? idLoker;
     String? suratLamaran;
+    String? token;
     String? status;
     dynamic keterangan;
     DateTime? createdAt;
@@ -55,20 +57,22 @@ class Datum {
 
     factory Datum.fromJson(Map<String, dynamic> json) => Datum(
         id: json["id"],
-        idPelamar: IdPelamar.fromJson(json["id_pelamar"]),
-        idLoker: IdLoker.fromJson(json["id_loker"]),
+        idPelamar: json["id_pelamar"] == null ? null : IdPelamar.fromJson(json["id_pelamar"]),
+        idLoker: json["id_loker"] == null ? null : IdLoker.fromJson(json["id_loker"]),
         suratLamaran: json["surat_lamaran"],
+        token: json["token"],
         status: json["status"],
         keterangan: json["keterangan"],
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
+        createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
     );
 
     Map<String, dynamic> toJson() => {
         "id": id,
-        "id_pelamar": idPelamar!.toJson(),
-        "id_loker": idLoker!.toJson(),
+        "id_pelamar": idPelamar?.toJson(),
+        "id_loker": idLoker?.toJson(),
         "surat_lamaran": suratLamaran,
+        "token": token,
         "status": status,
         "keterangan": keterangan,
         "created_at": createdAt?.toIso8601String(),
@@ -116,14 +120,14 @@ class IdLoker {
         nama: json["nama"],
         imgLoker: json["img_loker"],
         alamat: json["alamat"],
-        tanggal: DateTime.parse(json["tanggal"]),
+        tanggal: json["tanggal"] == null ? null : DateTime.parse(json["tanggal"]),
         deskripsi1: json["deskripsi1"],
         deskripsi2: json["deskripsi2"],
         deskripsi3: json["deskripsi3"],
         gaji: json["gaji"],
         status: json["status"],
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
+        createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
     );
 
     Map<String, dynamic> toJson() => {
@@ -187,8 +191,8 @@ class IdPelamar {
         role: json["role"],
         token: json["token"],
         cv: json["cv"],
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
+        createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
     );
 
     Map<String, dynamic> toJson() => {

@@ -1,4 +1,8 @@
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loker/bloc/notifikasi/notifikasi_bloc.dart';
@@ -11,6 +15,9 @@ import 'package:sizer/sizer.dart';
 
 import '../../../../model/hrd_list_notifikasi_model.dart';
 import '../../../../model/list_interview_model.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:printing/printing.dart';
 
 class NotificationPage extends StatelessWidget {
   NotificationPage({super.key});
@@ -124,13 +131,13 @@ class NotificationPage extends StatelessWidget {
                   bottom: TabBar(
                     isScrollable: true,
                     indicatorColor: Colors.transparent,
-                    labelColor: Color(0xff4F4F4F),
-                    unselectedLabelColor: Color(0xffBDBDBD),
+                    labelColor: const Color(0xff4F4F4F),
+                    unselectedLabelColor: const Color(0xffBDBDBD),
                     tabs: [
                       Tab(text: "Seleksi $seleksiCount"),
-                      Tab(text: "Hasil Seleksi"),
+                      const Tab(text: "Hasil Seleksi"),
                       Tab(text: "Interview $interviewCount"),
-                      Tab(text: "Hasil Interview"),
+                      const Tab(text: "Hasil Interview"),
                     ],
                   ),
                 ),
@@ -210,7 +217,7 @@ class NotificationPage extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            Text(
+                            const Text(
                               "Ditolak",
                               textAlign: TextAlign.center,
                             ),
@@ -239,7 +246,7 @@ class NotificationPage extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            Text(
+                            const Text(
                               "Lolos Seleksi",
                               textAlign: TextAlign.center,
                             ),
@@ -364,7 +371,7 @@ class NotificationPage extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            Text(
+                            const Text(
                               "Ditolak",
                               textAlign: TextAlign.center,
                             ),
@@ -393,7 +400,7 @@ class NotificationPage extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            Text(
+                            const Text(
                               "Diterima",
                               textAlign: TextAlign.center,
                             ),
@@ -418,29 +425,396 @@ class NotificationPage extends StatelessWidget {
   }
 
   Widget _lolosInterview(ListInterviewModel notifikasi) {
-    return ListView.builder(
-      itemCount: notifikasi.data!.length,
-      itemBuilder: (context, index) {
-        return notifikasi.data![index].status == 'Diterima'
-            ? InkWell(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => DetailNotifInterviewHrdPage(
-                          data: notifikasi.data![index],
-                        ),
-                      ));
-                },
-                child: NotificationCardWidget(
-                  date: notifikasi.data![index].jadwal,
-                  nama: notifikasi.data![index].idPelamar!.nama,
-                  status: notifikasi.data![index].status,
-                ),
-              )
-            : Container();
-      },
+    return Stack(
+      children: [
+        ListView.builder(
+          itemCount: notifikasi.data!.length,
+          itemBuilder: (context, index) {
+            return notifikasi.data![index].status == 'Diterima'
+                ? InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DetailNotifInterviewHrdPage(
+                              data: notifikasi.data![index],
+                            ),
+                          ));
+                    },
+                    child: NotificationCardWidget(
+                      date: notifikasi.data![index].jadwal,
+                      nama: notifikasi.data![index].idPelamar!.nama,
+                      status: notifikasi.data![index].status,
+                    ),
+                  )
+                : Container();
+          },
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+          child: Align(
+            alignment: Alignment.bottomRight,
+            child: FloatingActionButton(
+              child: const Icon(Icons.print),
+              onPressed: () async {
+                await Printing.layoutPdf(
+                    onLayout: (format) =>
+                        _generatePdf(format, 'title', notifikasi));
+              },
+            ),
+          ),
+        ),
+      ],
     );
+  }
+
+  Future<Uint8List> _generatePdf(
+      PdfPageFormat format, String title, ListInterviewModel notifikasi) async {
+    final pdf = pw.Document();
+
+    final image = pw.MemoryImage(
+      (await rootBundle.load('assets/images/twincom.png')).buffer.asUint8List(),
+    );
+
+    List<pw.Widget> list = [];
+
+    for (var i = 0; i < notifikasi.data!.length; i++) {
+      if (notifikasi.data![i].status == 'Diterima') {
+        list.add(
+          pw.Container(
+            color: PdfColors.white,
+            padding: const pw.EdgeInsets.symmetric(horizontal: 20),
+            child: pw.Table(
+              columnWidths: {
+                0: const pw.FlexColumnWidth(1),
+                1: const pw.FlexColumnWidth(4),
+                2: const pw.FlexColumnWidth(4),
+                3: const pw.FlexColumnWidth(4),
+              },
+              border: pw.TableBorder.all(color: PdfColors.black),
+              children: [
+                pw.TableRow(
+                  children: [
+                    pw.Padding(
+                      padding: const pw.EdgeInsets.symmetric(vertical: 5),
+                      child:
+                          pw.Text("${i + 1}", textAlign: pw.TextAlign.center),
+                    ),
+                    pw.Padding(
+                      padding: const pw.EdgeInsets.symmetric(vertical: 5),
+                      child: pw.Text(
+                          notifikasi.data![i].idPelamar!.nama.toString(),
+                          textAlign: pw.TextAlign.center),
+                    ),
+                    pw.Padding(
+                      padding: const pw.EdgeInsets.symmetric(vertical: 5),
+                      child: pw.Text(
+                          notifikasi.data![i].idLoker!.nama.toString(),
+                          textAlign: pw.TextAlign.center),
+                    ),
+                    pw.Padding(
+                      padding: const pw.EdgeInsets.symmetric(vertical: 5),
+                      child: pw.Text(notifikasi.data![i].status.toString(),
+                          textAlign: pw.TextAlign.center),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      }
+    }
+
+    pdf.addPage(
+      pw.MultiPage(
+        pageFormat: format,
+        build: (pw.Context context) => <pw.Widget>[
+          pw.Column(
+            children: [
+              pw.Container(
+                padding: const pw.EdgeInsets.symmetric(vertical: 20),
+                child: pw.Center(
+                  child: pw.Image(image, height: 70),
+                ),
+              ),
+              pw.Padding(
+                padding: const pw.EdgeInsets.symmetric(horizontal: 20),
+                child: pw.Divider(color: PdfColors.black),
+              ),
+              pw.Container(
+                margin: const pw.EdgeInsets.symmetric(vertical: 10),
+                child: pw.Center(
+                  child: pw.Text(
+                    "Laporan Calon Karyawan Yang dinyatakan Diterima",
+                    style: pw.TextStyle(
+                      fontSize: 20,
+                      fontWeight: pw.FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+              pw.Padding(
+                padding: const pw.EdgeInsets.symmetric(horizontal: 20),
+                child: pw.Divider(color: PdfColors.black),
+              ),
+              pw.Container(
+                margin: const pw.EdgeInsets.symmetric(vertical: 20),
+                child: pw.Column(
+                  children: list,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+
+    // pdf.addPage(
+    //   pw.MultiPage(
+    //     pageFormat: format,
+    //     build: (pw.Context context) => <pw.Widget>[
+    //       pw.Column(
+    //         children: [
+    //           pw.Container(
+    //             padding: const pw.EdgeInsets.symmetric(vertical: 20),
+    //             child: pw.Center(
+    //               child: pw.Image(image, height: 70),
+    //             ),
+    //           ),
+    //           pw.Padding(
+    //             padding: const pw.EdgeInsets.symmetric(horizontal: 20),
+    //             child: pw.Divider(color: PdfColors.black),
+    //           ),
+    //           pw.Container(
+    //             margin: const pw.EdgeInsets.symmetric(vertical: 20),
+    //             child: pw.Center(
+    //               child: pw.Text(
+    //                 "Laporan Calon Karyawan Yang dinyatakan Diterima",
+    //                 style: pw.TextStyle(
+    //                     fontWeight: pw.FontWeight.bold, fontSize: 16),
+    //               ),
+    //             ),
+    //           ),
+    //           pw.Container(
+    //             color: PdfColors.white,
+    //             padding: const pw.EdgeInsets.symmetric(horizontal: 20),
+    //             child: pw.Table(
+    //               columnWidths: {
+    //                 0: const pw.FlexColumnWidth(1),
+    //                 1: const pw.FlexColumnWidth(4),
+    //                 2: const pw.FlexColumnWidth(4),
+    //                 3: const pw.FlexColumnWidth(4),
+    //               },
+    //               border: pw.TableBorder.all(color: PdfColors.black),
+    //               children: [
+    //                 pw.TableRow(
+    //                   children: [
+    //                     pw.Padding(
+    //                       padding: const pw.EdgeInsets.symmetric(vertical: 5),
+    //                       child: pw.Text('NO', textAlign: pw.TextAlign.center),
+    //                     ),
+    //                     pw.Padding(
+    //                       padding: const pw.EdgeInsets.symmetric(vertical: 5),
+    //                       child:
+    //                           pw.Text('Nama', textAlign: pw.TextAlign.center),
+    //                     ),
+    //                     pw.Padding(
+    //                       padding: const pw.EdgeInsets.symmetric(vertical: 5),
+    //                       child: pw.Text('Lamaran',
+    //                           textAlign: pw.TextAlign.center),
+    //                     ),
+    //                     pw.Padding(
+    //                       padding: const pw.EdgeInsets.symmetric(vertical: 5),
+    //                       child:
+    //                           pw.Text('Status', textAlign: pw.TextAlign.center),
+    //                     ),
+    //                   ],
+    //                 ),
+    //               ],
+    //             ),
+    //           ),
+    //           pw.ListView.builder(
+    //             itemCount: notifikasi.data!.length,
+    //             itemBuilder: (context, index) {
+    //               return pw.Container(
+    //                 color: PdfColors.white,
+    //                 padding: const pw.EdgeInsets.symmetric(horizontal: 20),
+    //                 child: pw.Table(
+    //                   columnWidths: {
+    //                     0: const pw.FlexColumnWidth(1),
+    //                     1: const pw.FlexColumnWidth(4),
+    //                     2: const pw.FlexColumnWidth(4),
+    //                     3: const pw.FlexColumnWidth(4),
+    //                   },
+    //                   border: pw.TableBorder.all(color: PdfColors.black),
+    //                   children: [
+    //                     pw.TableRow(
+    //                       children: [
+    //                         pw.Padding(
+    //                           padding:
+    //                               const pw.EdgeInsets.symmetric(vertical: 5),
+    //                           child: pw.Text("${index + 1}",
+    //                               textAlign: pw.TextAlign.center),
+    //                         ),
+    //                         pw.Padding(
+    //                           padding:
+    //                               const pw.EdgeInsets.symmetric(vertical: 5),
+    //                           child: pw.Text(
+    //                               notifikasi.data![index].idPelamar!.nama
+    //                                   .toString(),
+    //                               textAlign: pw.TextAlign.center),
+    //                         ),
+    //                         pw.Padding(
+    //                           padding:
+    //                               const pw.EdgeInsets.symmetric(vertical: 5),
+    //                           child: pw.Text(
+    //                               notifikasi.data![index].idLoker!.nama
+    //                                   .toString(),
+    //                               textAlign: pw.TextAlign.center),
+    //                         ),
+    //                         pw.Padding(
+    //                           padding:
+    //                               const pw.EdgeInsets.symmetric(vertical: 5),
+    //                           child: pw.Text(
+    //                               notifikasi.data![index].status.toString(),
+    //                               textAlign: pw.TextAlign.center),
+    //                         ),
+    //                       ],
+    //                     ),
+    //                   ],
+    //                 ),
+    //               );
+    //             },
+    //           ),
+    //         ],
+    //       )
+    //     ],
+    //   ),
+
+    //   // pw.Page(
+    //   //   pageFormat: format,
+    //   //   build: (context) {
+    //   //     return pw.Column(
+    //   //       children: [
+    //   //         pw.Container(
+    //   //           padding: const pw.EdgeInsets.symmetric(vertical: 20),
+    //   //           child: pw.Center(
+    //   //             child: pw.Image(image, height: 70),
+    //   //           ),
+    //   //         ),
+    //   //         pw.Padding(
+    //   //           padding: const pw.EdgeInsets.symmetric(horizontal: 20),
+    //   //           child: pw.Divider(color: PdfColors.black),
+    //   //         ),
+    //   //         pw.Container(
+    //   //           margin: const pw.EdgeInsets.symmetric(vertical: 20),
+    //   //           child: pw.Center(
+    //   //             child: pw.Text(
+    //   //               "Laporan Calon Karyawan Yang dinyatakan Diterima",
+    //   //               style: pw.TextStyle(
+    //   //                   fontWeight: pw.FontWeight.bold, fontSize: 16),
+    //   //             ),
+    //   //           ),
+    //   //         ),
+    //   //         pw.Container(
+    //   //           color: PdfColors.white,
+    //   //           padding: const pw.EdgeInsets.symmetric(horizontal: 20),
+    //   //           child: pw.Table(
+    //   //             columnWidths: {
+    //   //               0: const pw.FlexColumnWidth(1),
+    //   //               1: const pw.FlexColumnWidth(4),
+    //   //               2: const pw.FlexColumnWidth(4),
+    //   //               3: const pw.FlexColumnWidth(4),
+    //   //             },
+    //   //             border: pw.TableBorder.all(color: PdfColors.black),
+    //   //             children: [
+    //   //               pw.TableRow(
+    //   //                 children: [
+    //   //                   pw.Padding(
+    //   //                     padding: const pw.EdgeInsets.symmetric(vertical: 5),
+    //   //                     child: pw.Text('NO', textAlign: pw.TextAlign.center),
+    //   //                   ),
+    //   //                   pw.Padding(
+    //   //                     padding: const pw.EdgeInsets.symmetric(vertical: 5),
+    //   //                     child:
+    //   //                         pw.Text('Nama', textAlign: pw.TextAlign.center),
+    //   //                   ),
+    //   //                   pw.Padding(
+    //   //                     padding: const pw.EdgeInsets.symmetric(vertical: 5),
+    //   //                     child: pw.Text('Lamaran',
+    //   //                         textAlign: pw.TextAlign.center),
+    //   //                   ),
+    //   //                   pw.Padding(
+    //   //                     padding: const pw.EdgeInsets.symmetric(vertical: 5),
+    //   //                     child:
+    //   //                         pw.Text('Status', textAlign: pw.TextAlign.center),
+    //   //                   ),
+    //   //                 ],
+    //   //               ),
+    //   //             ],
+    //   //           ),
+    //   //         ),
+    //   //         pw.ListView.builder(
+    //   //           itemCount: notifikasi.data!.length,
+    //   //           itemBuilder: (context, index) {
+    //   //             return pw.Container(
+    //   //               color: PdfColors.white,
+    //   //               padding: const pw.EdgeInsets.symmetric(horizontal: 20),
+    //   //               child: pw.Table(
+    //   //                 columnWidths: {
+    //   //                   0: const pw.FlexColumnWidth(1),
+    //   //                   1: const pw.FlexColumnWidth(4),
+    //   //                   2: const pw.FlexColumnWidth(4),
+    //   //                   3: const pw.FlexColumnWidth(4),
+    //   //                 },
+    //   //                 border: pw.TableBorder.all(color: PdfColors.black),
+    //   //                 children: [
+    //   //                   pw.TableRow(
+    //   //                     children: [
+    //   //                       pw.Padding(
+    //   //                         padding:
+    //   //                             const pw.EdgeInsets.symmetric(vertical: 5),
+    //   //                         child: pw.Text("${index + 1}",
+    //   //                             textAlign: pw.TextAlign.center),
+    //   //                       ),
+    //   //                       pw.Padding(
+    //   //                         padding:
+    //   //                             const pw.EdgeInsets.symmetric(vertical: 5),
+    //   //                         child: pw.Text(
+    //   //                             notifikasi.data![index].idPelamar!.nama
+    //   //                                 .toString(),
+    //   //                             textAlign: pw.TextAlign.center),
+    //   //                       ),
+    //   //                       pw.Padding(
+    //   //                         padding:
+    //   //                             const pw.EdgeInsets.symmetric(vertical: 5),
+    //   //                         child: pw.Text(
+    //   //                             notifikasi.data![index].idLoker!.nama
+    //   //                                 .toString(),
+    //   //                             textAlign: pw.TextAlign.center),
+    //   //                       ),
+    //   //                       pw.Padding(
+    //   //                         padding:
+    //   //                             const pw.EdgeInsets.symmetric(vertical: 5),
+    //   //                         child: pw.Text(
+    //   //                             notifikasi.data![index].status.toString(),
+    //   //                             textAlign: pw.TextAlign.center),
+    //   //                       ),
+    //   //                     ],
+    //   //                   ),
+    //   //                 ],
+    //   //               ),
+    //   //             );
+    //   //           },
+    //   //         )
+    //   //       ],
+    //   //     );
+    //   //   },
+    //   // ),
+    // );
+
+    return pdf.save();
   }
 
   Widget _ditolakInterview(ListInterviewModel notifikasi) {

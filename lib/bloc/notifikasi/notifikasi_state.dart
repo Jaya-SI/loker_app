@@ -27,7 +27,7 @@ class NotifikasiLoadAll extends NotifikasiState {
 
 class NotifikasiLoadAllPelamar extends NotifikasiState {
   final GetNotifikasiModel notifikasi;
-  final ListInterviewModel notifikasiInterview;
+  final ListInterviewPelmar notifikasiInterview;
 
   NotifikasiLoadAllPelamar({
     required this.notifikasi,

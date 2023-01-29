@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 
 import '../../model/hrd_list_notifikasi_model.dart';
 import '../../model/list_interview_model.dart';
+import '../../model/list_interview_pelamar.dart';
 import '../../model/notifikasi_model.dart';
 import '../../repositories/notifikasi/notifikasi_repository.dart';
 
@@ -17,7 +18,7 @@ class NotifikasiBloc extends Bloc<NotifikasiEvent, NotifikasiState> {
       try {
         GetNotifikasiModel notifikasi =
             await _repository.getNotifikasi(id: event.id);
-        ListInterviewModel interviewNotifikiasi =
+        ListInterviewPelmar interviewNotifikiasi =
             await _repository.getListInterveiwPelamar(id: event.id);
         emit(NotifikasiLoadAllPelamar(
             notifikasi: notifikasi, notifikasiInterview: interviewNotifikiasi));

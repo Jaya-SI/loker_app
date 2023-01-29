@@ -8,6 +8,7 @@ import 'package:sizer/sizer.dart';
 
 import '../../../../model/get_loker_model.dart';
 import '../../../../model/list_interview_model.dart';
+import '../../../../model/list_interview_pelamar.dart';
 import '../../../../model/notifikasi_model.dart';
 import '../../../../widgets/notification_card_widget.dart';
 import 'detail_hasil_lamaran_pelamar.dart.dart';
@@ -130,7 +131,7 @@ class NotifikasiPelamarPage extends StatelessWidget {
     );
   }
 
-  Widget _interviewPage(ListInterviewModel notifikasi) {
+  Widget _interviewPage(ListInterviewPelmar notifikasi) {
     return ListView.builder(
       itemCount: notifikasi.data!.length,
       itemBuilder: (context, index) {
@@ -157,7 +158,7 @@ class NotifikasiPelamarPage extends StatelessWidget {
     );
   }
 
-  Widget _diterimaPage(ListInterviewModel notifikasi) {
+  Widget _diterimaPage(ListInterviewPelmar notifikasi) {
     return ListView.builder(
       itemCount: notifikasi.data!.length,
       itemBuilder: (context, index) {

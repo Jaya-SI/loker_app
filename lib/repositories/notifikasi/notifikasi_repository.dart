@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import '../../common/shared_code.dart';
 import '../../model/hrd_list_notifikasi_model.dart';
 import '../../model/list_interview_model.dart';
+import '../../model/list_interview_pelamar.dart';
 import '../../model/notifikasi_model.dart';
 import 'base_notifikasi_repository.dart';
 
@@ -21,13 +22,13 @@ class NotifikasiRepository extends BaseNotifikasiRepository {
     }
   }
 
-  Future<ListInterviewModel> getListInterveiwPelamar(
+  Future<ListInterviewPelmar> getListInterveiwPelamar(
       {String? id}) async {
     final res = await http
         .get(Uri.parse("${SharedCode.baseUrl}/api/pelamar/interview/$id"));
 
-    ListInterviewModel interview =
-        listInterviewModelFromJson(res.body);
+    ListInterviewPelmar interview =
+        listInterviewPelmarFromJson(res.body);
 
     if (res.statusCode == 200) {
       return interview;
